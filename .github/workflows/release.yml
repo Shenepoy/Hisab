@@ -1,7 +1,9 @@
 name: Release (local-only build)
 
 # Ships the public local-only Android application. The workflow has no service
-# credentials and produces only the FOSS flavor.
+# credentials. Stable vX.Y.Z tags build signed FOSS APKs. Preview vX.Y.Z-test
+# tags create an empty draft prerelease after checks and never build a
+# release APK — the private Staging workflow attaches debug cloud APKs.
 
 on:
   push:
@@ -13,7 +15,7 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
 
-# Only the job that publishes the release needs to write.
+# Only the jobs that publish a release need to write.
 permissions:
   contents: read
 
@@ -21,13 +23,32 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  classify:
+    name: Classify
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      kind: ${{ steps.classify.outputs.kind }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Classify ref
+        id: classify
+        run: bash ./scripts/ci/classify_release_ref.sh "${{ github.ref }}" "${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+
   checks:
     name: Checks
+    needs: classify
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Read Flutter version
         id: flutter
@@ -54,12 +75,15 @@ jobs:
 
   build-foss:
     name: Build FOSS APKs
-    needs: checks
+    if: ${{ needs.classify.outputs.kind != 'preview' }}
+    needs: [classify, checks]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Read Flutter version
         id: flutter
@@ -118,8 +142,8 @@ jobs:
 
   github-release:
     name: GitHub Release
-    if: ${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-test.') }}
-    needs: build-foss
+    if: ${{ needs.classify.outputs.kind == 'stable' }}
+    needs: [classify, build-foss]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -130,13 +154,67 @@ jobs:
         with:
           name: foss-apk
 
+      - name: Checkout for version metadata
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Write APK checksums
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          apks=(app-*-foss-release.apk)
+          if (( ${#apks[@]} == 0 )); then
+            echo "No FOSS APKs were downloaded" >&2
+            exit 1
+          fi
+          sha256sum "${apks[@]}" > SHA256SUMS
+          python3 - <<'PY'
+          import json, pathlib, re
+          text = pathlib.Path("pubspec.yaml").read_text(encoding="utf-8")
+          match = re.search(r"^version:\s*([0-9.]+)\+(\d+)", text, re.M)
+          if not match:
+              raise SystemExit("Could not read version from pubspec.yaml")
+          pathlib.Path("update.json").write_text(
+              json.dumps(
+                  {"version": match.group(1), "versionCode": int(match.group(2))},
+                  indent=2,
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          PY
+
       - name: Create draft release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          prerelease: ${{ contains(github.ref_name, '-') }}
+          prerelease: false
           generate_release_notes: true
+          fail_on_unmatched_files: true
           files: |
             app-armeabi-v7a-foss-release.apk
             app-arm64-v8a-foss-release.apk
             app-x86_64-foss-release.apk
+            SHA256SUMS
+            update.json
+
+  preview-release:
+    name: Preview Release
+    if: ${{ needs.classify.outputs.kind == 'preview' }}
+    needs: [classify, checks]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Create empty draft prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: true
+          generate_release_notes: true
+          body: |
+            Preview / test build. This tag does not include signed FOSS
+            release APKs. Cloud debug APKs are attached by the private
+            Staging workflow.

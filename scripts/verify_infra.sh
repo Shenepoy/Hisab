@@ -46,4 +46,22 @@ for f in web/images/welcome.png web/images/groups.png web/images/add-expense.png
   [[ -f "$f" ]] || fail "Missing $f"
 done
 
+echo "==> Checking release workflow gates"
+[[ -x scripts/ci/classify_release_ref.sh ]] \
+  || fail "missing executable scripts/ci/classify_release_ref.sh"
+bash ./scripts/ci/classify_release_ref_test.sh
+grep -q 'classify_release_ref.sh' .github/workflows/release.yml \
+  || fail "release.yml must classify tags before building APKs"
+if ! grep -A20 'name: Build FOSS APKs' .github/workflows/release.yml | grep -q preview; then
+  fail "release.yml must skip FOSS APKs for preview tags"
+fi
+grep -q 'name: Preview Release' .github/workflows/release.yml \
+  || fail "release.yml must create an empty draft for preview tags"
+for wf in .github/workflows/ci.yml .github/workflows/release.yml; do
+  checkouts=$(grep -c 'uses: actions/checkout@' "$wf")
+  persists=$(grep -c 'persist-credentials: false' "$wf")
+  [[ "$checkouts" -eq "$persists" ]] \
+    || fail "$wf: every checkout must set persist-credentials: false ($persists/$checkouts)"
+done
+
 echo "✅ Public infrastructure check passed"

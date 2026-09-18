@@ -26,5 +26,7 @@ else
   bash "$ROOT_DIR/scripts/ci/decode_keystore.sh" debug
 fi
 
-flutter build apk "--$MODE" --flavor foss --split-per-abi "${extra[@]}"
+flutter build apk "--$MODE" --flavor foss --split-per-abi \
+  --dart-define=HISAB_DISTRIBUTION=foss \
+  "${extra[@]}"
 echo "Built FOSS $MODE APKs in build/app/outputs/flutter-apk/"

@@ -8,5 +8,6 @@ cd "$ROOT_DIR"
 
 bash ./scripts/verify_security.sh
 bash ./scripts/verify_infra.sh
+bash ./scripts/ci/assert_update_manifests.sh
 
 echo "✅ All static release checks passed"

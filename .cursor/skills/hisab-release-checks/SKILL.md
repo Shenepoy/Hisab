@@ -9,10 +9,9 @@ description: >-
 
 # Hisab release checks
 
-Pre-release gate for the **public Hisab client**. This repository has no
-backend: it builds the FOSS, offline-only app. Backend and cloud-build checks
-live in the private repo's own runbook, so do not look for migrations, Edge
-Functions or production secrets here.
+Pre-release gate for the **foss** build. This repository has no backend: it
+builds the public local-only app. **test** and **cloud** live in `hisab-cloud`;
+do not look for migrations, Edge Functions or production secrets here.
 
 **Do not start the app** (`never run project` user rule). Prefer scripts + CI.
 
@@ -28,8 +27,8 @@ Functions or production secrets here.
 |------|--------|
 | Release workflow | `.github/workflows/release.yml` (tags `v*`, FOSS APKs, draft release) |
 | CI workflow | `.github/workflows/ci.yml` (checks, tests, offline build guard) |
-| Version | `pubspec.yaml` → `MARKETING+BUILD` (e.g. `0.6.16+65`) |
-| Tag style | `v0.6.16` annotated; commit `chore(release): v0.6.16` |
+| Version | `pubspec.yaml` → `MARKETING+BUILD` (e.g. `0.7.17+80`) |
+| Tag style | `v0.7.17` annotated; commit `chore(release): v0.7.17` |
 | Flutter version | `.flutter-version` — single source of truth for every workflow |
 
 ## Checklist (copy and track)
@@ -69,7 +68,7 @@ Launch exactly one `security-review` subagent (`run_in_background: false`
 unless asked otherwise):
 
 ```text
-Full Repository Path: /home/zyzto/Documents/Code/Hisab
+Full Repository Path: /home/zyzto/Projects/Hisab
 Diff: branch changes
 ```
 
@@ -89,10 +88,10 @@ Do **not** start a long-lived app or `flutter run`.
 
 ## 6. Contract and docs
 
-If a change touches `packages/hisab_backend`, treat it as a breaking API change
-for every backend implementation, including the private one. Update
-`packages/hisab_backend/README.md` and `docs/BACKEND_BEHAVIOUR.md` in the same
-change, and tell the user the private repo needs a matching update.
+This repository ships **foss** only. Keep it local-only (`off` / `local`
+receipt OCR, deterministic scanner). Nano, BYO LLM, sync, and billing belong
+to **test** and **cloud** in `hisab-cloud`. If a change needs those, stop and
+do it in the private repo.
 
 ## 7–8. Release (only when asked)
 
@@ -100,7 +99,7 @@ change, and tell the user the private repo needs a matching update.
 2. Commit with `chore(release): vX.Y.Z` (user must have asked to commit/release)
 3. `git push origin main`
 4. `git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin vX.Y.Z`
-5. `gh run watch` on the Release workflow until Checks, Build FOSS APKs and GitHub Release succeed
+5. `gh run watch` on the Release workflow until Checks, Build FOSS APKs and GitHub Release succeed. A `vX.Y.Z-test` preview tag skips the APK build and only opens an empty draft prerelease.
 
 The release is created as a **draft** on purpose. The private pipeline attaches
 the cloud build to the same release; publish only after both sets of artifacts

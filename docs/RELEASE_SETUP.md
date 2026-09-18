@@ -58,8 +58,10 @@ Connect.
     bash scripts/run_release_checks.sh
     flutter test
 
-The release workflow builds the FOSS APKs and creates a draft release. Publish
-only after checking the generated artifacts and localized static pages.
+Stable `vX.Y.Z` tags build signed FOSS APKs and create a draft release.
+Preview `vX.Y.Z-test` tags run checks and create an empty draft prerelease;
+they never build a release APK. Publish a stable draft only after checking
+the generated artifacts and localized static pages.
 
 Before publishing, confirm that the artifact set contains only the local
 application and that `bash scripts/ci/assert_offline_only.sh` passes.
