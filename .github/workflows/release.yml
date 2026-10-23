@@ -10,6 +10,11 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      app_ref:
+        description: "Existing vX.Y.Z or vX.Y.Z-test tag to release with this workflow"
+        type: string
+        default: ''
 
 concurrency:
   group: release-${{ github.ref }}
@@ -29,15 +34,34 @@ jobs:
     timeout-minutes: 5
     outputs:
       kind: ${{ steps.classify.outputs.kind }}
+      app_ref: ${{ steps.classify.outputs.app_ref }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Classify ref
         id: classify
-        run: bash ./scripts/ci/classify_release_ref.sh "${{ github.ref }}" "${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+        env:
+          REQUESTED_APP_REF: ${{ inputs.app_ref }}
+          EVENT_REF: ${{ github.ref }}
+          EVENT_REF_NAME: ${{ github.ref_name }}
+        run: |
+          release_ref="$EVENT_REF"
+          release_name="$EVENT_REF_NAME"
+          if [[ -n "$REQUESTED_APP_REF" ]]; then
+            if [[ ! "$REQUESTED_APP_REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-test)?$ ]]; then
+              echo "app_ref must be an existing vX.Y.Z or vX.Y.Z-test tag" >&2
+              exit 1
+            fi
+            git rev-parse --verify "refs/tags/$REQUESTED_APP_REF^{commit}" >/dev/null
+            release_ref="refs/tags/$REQUESTED_APP_REF"
+            release_name="$REQUESTED_APP_REF"
+          fi
+          bash ./scripts/ci/classify_release_ref.sh "$release_ref" "$release_name" >> "$GITHUB_OUTPUT"
+          printf 'app_ref=%s\n' "$release_name" >> "$GITHUB_OUTPUT"
 
   checks:
     name: Checks
@@ -48,6 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
+          ref: ${{ needs.classify.outputs.app_ref }}
           persist-credentials: false
 
       - name: Read Flutter version
@@ -83,6 +108,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
+          ref: ${{ needs.classify.outputs.app_ref }}
           persist-credentials: false
 
       - name: Read Flutter version
@@ -149,15 +175,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout for version metadata
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.classify.outputs.app_ref }}
+          persist-credentials: false
+
       - name: Download APKs
         uses: actions/download-artifact@v8
         with:
           name: foss-apk
-
-      - name: Checkout for version metadata
-        uses: actions/checkout@v6
-        with:
-          persist-credentials: false
 
       - name: Write APK checksums
         run: |
@@ -188,6 +215,7 @@ jobs:
       - name: Create draft release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.classify.outputs.app_ref }}
           draft: true
           prerelease: false
           generate_release_notes: true
@@ -211,6 +239,7 @@ jobs:
       - name: Create empty draft prerelease
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.classify.outputs.app_ref }}
           draft: true
           prerelease: true
           generate_release_notes: true
