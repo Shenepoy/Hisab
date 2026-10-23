@@ -15,7 +15,9 @@ Stream<GroupRole?> myRoleInGroup(Ref ref, String groupId) {
   return ref
       .watch(groupMemberRepositoryProvider)
       .watchMyMember(groupId)
-      .map((member) => member == null ? null : GroupRole.fromString(member.role));
+      .map(
+        (member) => member == null ? null : GroupRole.fromString(member.role),
+      );
 }
 
 @riverpod

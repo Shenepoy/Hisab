@@ -13,23 +13,17 @@ part 'repository_providers.g.dart';
 
 @riverpod
 IGroupRepository groupRepository(Ref ref) {
-  return PowerSyncGroupRepository(
-    ref.watch(powerSyncDatabaseProvider),
-  );
+  return PowerSyncGroupRepository(ref.watch(powerSyncDatabaseProvider));
 }
 
 @riverpod
 IParticipantRepository participantRepository(Ref ref) {
-  return PowerSyncParticipantRepository(
-    ref.watch(powerSyncDatabaseProvider),
-  );
+  return PowerSyncParticipantRepository(ref.watch(powerSyncDatabaseProvider));
 }
 
 @riverpod
 IExpenseRepository expenseRepository(Ref ref) {
-  return PowerSyncExpenseRepository(
-    ref.watch(powerSyncDatabaseProvider),
-  );
+  return PowerSyncExpenseRepository(ref.watch(powerSyncDatabaseProvider));
 }
 
 @riverpod
@@ -43,9 +37,7 @@ IHouseholdBalanceReassignmentRepository householdBalanceReassignmentRepository(
 
 @riverpod
 ITagRepository tagRepository(Ref ref) {
-  return PowerSyncTagRepository(
-    ref.watch(powerSyncDatabaseProvider),
-  );
+  return PowerSyncTagRepository(ref.watch(powerSyncDatabaseProvider));
 }
 
 @riverpod

@@ -100,8 +100,7 @@ mixin _ExpenseFormPhotoActionsMixin on ConsumerState<ExpenseFormPage> {
         Log.warning('Photo add error', error: e, stackTrace: stack);
         context.showError('receipt_scan_error'.tr(args: [e.toString()]));
       }
-    } finally {
-    }
+    } finally {}
     if (scanAfter && lastOcrBytes != null && mounted) {
       final scanIndex = _expenseImages.length - 1;
       await _onScanReceiptFromPhoto(
@@ -227,8 +226,7 @@ mixin _ExpenseFormPhotoActionsMixin on ConsumerState<ExpenseFormPage> {
       if (mounted && isAndroid && !kIsWeb) {
         _lostPickerDataChecked = false;
         await _recoverLostPickerImage();
-      } else {
-      }
+      } else {}
       return;
     }
     await _ingestPickedPhotos(files, scanAfter: scanAfter);

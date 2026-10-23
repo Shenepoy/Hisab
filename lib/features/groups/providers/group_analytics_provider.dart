@@ -305,7 +305,8 @@ final groupAnalyticsDataProvider =
                           tags: tags,
                           expenses: expenses,
                           query: query,
-                          currentUserParticipantId: participants.firstOrNull?.id,
+                          currentUserParticipantId:
+                              participants.firstOrNull?.id,
                         ),
                       );
                     },

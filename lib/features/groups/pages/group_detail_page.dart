@@ -132,10 +132,7 @@ class _GroupDetailPageState extends ConsumerState<GroupDetailPage> {
             messageKey: 'group_not_found_message',
           );
         }
-        return _GroupDetailContent(
-          group: group,
-          initialTab: widget.initialTab,
-        );
+        return _GroupDetailContent(group: group, initialTab: widget.initialTab);
       },
       loading: (context) =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -147,10 +144,7 @@ class _GroupDetailContent extends ConsumerStatefulWidget {
   final Group group;
   final GroupDetailTab initialTab;
 
-  const _GroupDetailContent({
-    required this.group,
-    required this.initialTab,
-  });
+  const _GroupDetailContent({required this.group, required this.initialTab});
 
   @override
   ConsumerState<_GroupDetailContent> createState() =>
@@ -193,10 +187,7 @@ class _GroupDetailContentState extends ConsumerState<_GroupDetailContent>
   int? _tabIndexFromBrowserPath() {
     final path = webVisibleAppRoutePath();
     if (path == null) return null;
-    return groupDetailTabIndexFromPath(
-      path: path,
-      groupId: widget.group.id,
-    );
+    return groupDetailTabIndexFromPath(path: path, groupId: widget.group.id);
   }
 
   String _targetPathForTabIndex(int index) {
@@ -349,8 +340,7 @@ class _GroupDetailContentState extends ConsumerState<_GroupDetailContent>
     GroupRole? myRole,
     bool localOnly,
   ) {
-    final isOwnerOrAdmin =
-        true;
+    final isOwnerOrAdmin = true;
     final canAddExpense = isOwnerOrAdmin || widget.group.allowMemberAddExpense;
 
     if (index == 0) {
@@ -398,31 +388,14 @@ class _GroupDetailContentState extends ConsumerState<_GroupDetailContent>
 
     final canPop = routerCanPop(context);
     return PopScope(
-        canPop: canPop,
-        onPopInvokedWithResult: (didPop, _) {
-          if (!didPop) _navigateBack();
-        },
-        child: LayoutBuilder(
-          builder: (context, layoutConstraints) {
-            if (!routeReady) {
-              return Scaffold(
-                appBar: ContentAlignedAppBar(
-                  contentAreaWidth: layoutConstraints.maxWidth,
-                  centerTitle: false,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: _navigateBack,
-                  ),
-                  title: _buildAppBarTitle(context),
-                ),
-                body: const SizedBox.shrink(),
-              );
-            }
+      canPop: canPop,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _navigateBack();
+      },
+      child: LayoutBuilder(
+        builder: (context, layoutConstraints) {
+          if (!routeReady) {
             return Scaffold(
-              floatingActionButtonLocation: ContentAlignedFabLocation.of(
-                context,
-                contentAreaWidth: layoutConstraints.maxWidth,
-              ),
               appBar: ContentAlignedAppBar(
                 contentAreaWidth: layoutConstraints.maxWidth,
                 centerTitle: false,
@@ -431,233 +404,245 @@ class _GroupDetailContentState extends ConsumerState<_GroupDetailContent>
                   onPressed: _navigateBack,
                 ),
                 title: _buildAppBarTitle(context),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.analytics_outlined),
-                    tooltip: 'analytics'.tr(),
-                    onPressed: () => context.push(
-                      RoutePaths.groupAnalytics(widget.group.id),
+              ),
+              body: const SizedBox.shrink(),
+            );
+          }
+          return Scaffold(
+            floatingActionButtonLocation: ContentAlignedFabLocation.of(
+              context,
+              contentAreaWidth: layoutConstraints.maxWidth,
+            ),
+            appBar: ContentAlignedAppBar(
+              contentAreaWidth: layoutConstraints.maxWidth,
+              centerTitle: false,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _navigateBack,
+              ),
+              title: _buildAppBarTitle(context),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.analytics_outlined),
+                  tooltip: 'analytics'.tr(),
+                  onPressed: () =>
+                      context.push(RoutePaths.groupAnalytics(widget.group.id)),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () =>
+                      context.push(RoutePaths.groupSettings(widget.group.id)),
+                ),
+              ],
+            ),
+            body: ConstrainedContent(
+              child: Column(
+                children: [
+                  if (widget.group.isArchived) _buildArchivedBanner(context),
+                  if (widget.group.isPersonal) ...[
+                    Expanded(
+                      child: _ExpensesTab(
+                        groupId: widget.group.id,
+                        group: widget.group,
+                        onRefresh: _onRefresh,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () => context.push(
-                      RoutePaths.groupSettings(widget.group.id),
+                  ] else ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          splashFactory: NoSplash.splashFactory,
+                          highlightColor: Colors.transparent,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Builder(
+                            builder: (context) {
+                              final theme = Theme.of(context);
+                              final colorScheme = theme.colorScheme;
+                              return CustomSlidingSegmentedControl<int>(
+                                controller: _segmentController,
+                                initialValue: _initialTabIndex,
+                                children: {
+                                  0: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    child: Text(
+                                      'expenses'.tr(),
+                                      style: theme.textTheme.titleSmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: _selectedTabIndex == 0
+                                                ? colorScheme.primary
+                                                : colorScheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ),
+                                  1: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    child: Text(
+                                      'balance'.tr(),
+                                      style: theme.textTheme.titleSmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: _selectedTabIndex == 1
+                                                ? colorScheme.primary
+                                                : colorScheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ),
+                                  2: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    child: Text(
+                                      'people'.tr(),
+                                      style: theme.textTheme.titleSmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: _selectedTabIndex == 2
+                                                ? colorScheme.primary
+                                                : colorScheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ),
+                                },
+                                height: 52,
+                                padding: 16,
+                                innerPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.surfaceContainerHighest
+                                      .withValues(alpha: 0.6),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                thumbDecoration: BoxDecoration(
+                                  color: colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: UiPerf.preferCheapShadows
+                                      ? null
+                                      : [
+                                          BoxShadow(
+                                            color: colorScheme.shadow
+                                                .withValues(alpha: 0.1),
+                                            blurRadius: 3,
+                                            offset: const Offset(0, 1),
+                                          ),
+                                        ],
+                                ),
+                                isStretch: true,
+                                duration: UiPerf.preferInstantShellTabs
+                                    ? Duration.zero
+                                    : const Duration(milliseconds: 200),
+                                curve: Curves.easeInOut,
+                                onValueChanged: (v) {
+                                  _syncUrlToTab(v);
+                                  setState(() {
+                                    _selectedTabIndex = v;
+                                    _programmaticTargetPage = v;
+                                  });
+                                  _tabIndexNotifier.value = v;
+                                  final pageDuration =
+                                      UiPerf.preferInstantShellTabs
+                                      ? Duration.zero
+                                      : const Duration(milliseconds: 300);
+                                  if (pageDuration == Duration.zero) {
+                                    _pageController.jumpToPage(v);
+                                    if (mounted) {
+                                      setState(
+                                        () => _programmaticTargetPage = null,
+                                      );
+                                    }
+                                  } else {
+                                    _pageController
+                                        .animateToPage(
+                                          v,
+                                          duration: pageDuration,
+                                          curve: Curves.easeInOut,
+                                        )
+                                        .whenComplete(() {
+                                          if (mounted) {
+                                            setState(
+                                              () => _programmaticTargetPage =
+                                                  null,
+                                            );
+                                          }
+                                        });
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: 3,
+                        onPageChanged: (i) {
+                          if (_programmaticTargetPage != null &&
+                              i != _programmaticTargetPage) {
+                            return;
+                          }
+                          if (_programmaticTargetPage != null) {
+                            setState(() => _programmaticTargetPage = null);
+                          }
+                          setState(() => _selectedTabIndex = i);
+                          _tabIndexNotifier.value = i;
+                          _segmentController.value = i;
+                          _syncUrlToTab(i);
+                        },
+                        itemBuilder: (context, i) {
+                          // Lazy: only visited pages mount; keepAlive preserves scroll.
+                          return _KeepAliveTab(
+                            child: switch (i) {
+                              0 => _ExpensesTab(
+                                groupId: widget.group.id,
+                                group: widget.group,
+                                onRefresh: _onRefresh,
+                              ),
+                              1 => _BalanceTab(
+                                groupId: widget.group.id,
+                                onRefresh: _onRefresh,
+                              ),
+                              _ => _PeopleTab(
+                                groupId: widget.group.id,
+                                group: widget.group,
+                                onRefresh: _onRefresh,
+                              ),
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ],
               ),
-              body: ConstrainedContent(
-                child: Column(
-                  children: [
-                    if (widget.group.isArchived) _buildArchivedBanner(context),
-                    if (widget.group.isPersonal) ...[
-                      Expanded(
-                        child: _ExpensesTab(
-                          groupId: widget.group.id,
-                          group: widget.group,
-                          onRefresh: _onRefresh,
-                        ),
-                      ),
-                    ] else ...[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(
-                            splashFactory: NoSplash.splashFactory,
-                            highlightColor: Colors.transparent,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Builder(
-                              builder: (context) {
-                                final theme = Theme.of(context);
-                                final colorScheme = theme.colorScheme;
-                                return CustomSlidingSegmentedControl<int>(
-                                  controller: _segmentController,
-                                  initialValue: _initialTabIndex,
-                                  children: {
-                                    0: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                      ),
-                                      child: Text(
-                                        'expenses'.tr(),
-                                        style: theme.textTheme.titleSmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: _selectedTabIndex == 0
-                                                  ? colorScheme.primary
-                                                  : colorScheme
-                                                        .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ),
-                                    1: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                      ),
-                                      child: Text(
-                                        'balance'.tr(),
-                                        style: theme.textTheme.titleSmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: _selectedTabIndex == 1
-                                                  ? colorScheme.primary
-                                                  : colorScheme
-                                                        .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ),
-                                    2: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                      ),
-                                      child: Text(
-                                        'people'.tr(),
-                                        style: theme.textTheme.titleSmall
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: _selectedTabIndex == 2
-                                                  ? colorScheme.primary
-                                                  : colorScheme
-                                                        .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ),
-                                  },
-                                  height: 52,
-                                  padding: 16,
-                                  innerPadding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: colorScheme.surfaceContainerHighest
-                                        .withValues(alpha: 0.6),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  thumbDecoration: BoxDecoration(
-                                    color: colorScheme.surface,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: UiPerf.preferCheapShadows
-                                        ? null
-                                        : [
-                                            BoxShadow(
-                                              color: colorScheme.shadow
-                                                  .withValues(alpha: 0.1),
-                                              blurRadius: 3,
-                                              offset: const Offset(0, 1),
-                                            ),
-                                          ],
-                                  ),
-                                  isStretch: true,
-                                  duration: UiPerf.preferInstantShellTabs
-                                      ? Duration.zero
-                                      : const Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
-                                  onValueChanged: (v) {
-                                    _syncUrlToTab(v);
-                                    setState(() {
-                                      _selectedTabIndex = v;
-                                      _programmaticTargetPage = v;
-                                    });
-                                    _tabIndexNotifier.value = v;
-                                    final pageDuration =
-                                        UiPerf.preferInstantShellTabs
-                                        ? Duration.zero
-                                        : const Duration(milliseconds: 300);
-                                    if (pageDuration == Duration.zero) {
-                                      _pageController.jumpToPage(v);
-                                      if (mounted) {
-                                        setState(
-                                          () => _programmaticTargetPage = null,
-                                        );
-                                      }
-                                    } else {
-                                      _pageController
-                                          .animateToPage(
-                                            v,
-                                            duration: pageDuration,
-                                            curve: Curves.easeInOut,
-                                          )
-                                          .whenComplete(() {
-                                            if (mounted) {
-                                              setState(
-                                                () => _programmaticTargetPage =
-                                                    null,
-                                              );
-                                            }
-                                          });
-                                    }
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: PageView.builder(
-                          controller: _pageController,
-                          itemCount: 3,
-                          onPageChanged: (i) {
-                            if (_programmaticTargetPage != null &&
-                                i != _programmaticTargetPage) {
-                              return;
-                            }
-                            if (_programmaticTargetPage != null) {
-                              setState(() => _programmaticTargetPage = null);
-                            }
-                            setState(() => _selectedTabIndex = i);
-                            _tabIndexNotifier.value = i;
-                            _segmentController.value = i;
-                            _syncUrlToTab(i);
-                          },
-                          itemBuilder: (context, i) {
-                            // Lazy: only visited pages mount; keepAlive preserves scroll.
-                            return _KeepAliveTab(
-                              child: switch (i) {
-                                0 => _ExpensesTab(
-                                  groupId: widget.group.id,
-                                  group: widget.group,
-                                  onRefresh: _onRefresh,
-                                ),
-                                1 => _BalanceTab(
-                                  groupId: widget.group.id,
-                                  onRefresh: _onRefresh,
-                                ),
-                                _ => _PeopleTab(
-                                  groupId: widget.group.id,
-                                  group: widget.group,
-                                  onRefresh: _onRefresh,
-                                ),
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              floatingActionButton: ValueListenableBuilder<int>(
-                valueListenable: _tabIndexNotifier,
-                builder: (context, index, _) =>
-                    _buildFAB(
-                      context,
-                      widget.group.isPersonal ? 0 : index,
-                      myRole,
-                      localOnly,
-                    ) ??
-                    const SizedBox.shrink(),
-              ),
-            );
-          },
-        ),
+            ),
+            floatingActionButton: ValueListenableBuilder<int>(
+              valueListenable: _tabIndexNotifier,
+              builder: (context, index, _) =>
+                  _buildFAB(
+                    context,
+                    widget.group.isPersonal ? 0 : index,
+                    myRole,
+                    localOnly,
+                  ) ??
+                  const SizedBox.shrink(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -1338,10 +1323,7 @@ class _BalanceTab extends ConsumerWidget {
   final String groupId;
   final Future<void> Function() onRefresh;
 
-  const _BalanceTab({
-    required this.groupId,
-    required this.onRefresh,
-  });
+  const _BalanceTab({required this.groupId, required this.onRefresh});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1403,8 +1385,7 @@ class _PeopleTabState extends ConsumerState<_PeopleTab> {
             final theme = Theme.of(context);
             final myRole = myRoleAsync.value;
             final myParticipantId = myMemberAsync.value?.participantId;
-            final isOwnerOrAdmin =
-                true;
+            final isOwnerOrAdmin = true;
 
             // Build lookup: participantId -> GroupMember
             final memberByParticipantId = <String, GroupMember>{};

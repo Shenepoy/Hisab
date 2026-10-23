@@ -810,10 +810,7 @@ class HomePage extends ConsumerWidget {
 }
 
 class _HomeFabCluster extends StatefulWidget {
-  const _HomeFabCluster({
-    required this.localOnly,
-    required this.onCreate,
-  });
+  const _HomeFabCluster({required this.localOnly, required this.onCreate});
 
   final bool localOnly;
   final VoidCallback onCreate;

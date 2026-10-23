@@ -22,9 +22,7 @@ void showExpenseImageFullScreen(BuildContext context, String imagePath) {
     builder: (_) => Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.zero,
-      child: InteractiveViewer(
-        child: Image.file(file, fit: BoxFit.contain),
-      ),
+      child: InteractiveViewer(child: Image.file(file, fit: BoxFit.contain)),
     ),
   );
 }

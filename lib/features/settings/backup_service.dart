@@ -87,18 +87,15 @@ class BackupService {
   final IHouseholdBalanceReassignmentRepository? householdReassignmentRepo;
 
   /// Repositories backed directly by the local SQLite database.
-  static BackupService forImport({
-    required PowerSyncDatabase db,
-  }) {
+  static BackupService forImport({required PowerSyncDatabase db}) {
     return BackupService(
       db: db,
       groupRepo: PowerSyncGroupRepository(db),
       participantRepo: PowerSyncParticipantRepository(db),
       expenseRepo: PowerSyncExpenseRepository(db),
       tagRepo: PowerSyncTagRepository(db),
-      householdReassignmentRepo: PowerSyncHouseholdBalanceReassignmentRepository(
-        db,
-      ),
+      householdReassignmentRepo:
+          PowerSyncHouseholdBalanceReassignmentRepository(db),
     );
   }
 

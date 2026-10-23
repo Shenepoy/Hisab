@@ -281,49 +281,47 @@ class _ExpenseDetailShellState extends ConsumerState<ExpenseDetailShell>
         onPressed: nextId != null && !_blockInteraction ? goNext : null,
       ),
       PopupMenuButton<String>(
-          useRootNavigator: true,
-          icon: const Icon(Icons.more_vert),
-          enabled: expense != null,
-          onSelected: expense != null
-              ? (value) async {
-                  if (value == 'edit') {
-                    await context.push(
-                      RoutePaths.groupExpenseEdit(widget.groupId, activeId),
-                    );
-                    if (context.mounted) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (context.mounted) {
-                          ref.invalidate(futureExpenseProvider(activeId));
-                          ref.invalidate(
-                            expensesByGroupProvider(widget.groupId),
-                          );
-                        }
-                      });
-                    }
-                  } else if (value == 'delete') {
-                    unawaited(_confirmDelete(context, ref, expense));
+        useRootNavigator: true,
+        icon: const Icon(Icons.more_vert),
+        enabled: expense != null,
+        onSelected: expense != null
+            ? (value) async {
+                if (value == 'edit') {
+                  await context.push(
+                    RoutePaths.groupExpenseEdit(widget.groupId, activeId),
+                  );
+                  if (context.mounted) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (context.mounted) {
+                        ref.invalidate(futureExpenseProvider(activeId));
+                        ref.invalidate(expensesByGroupProvider(widget.groupId));
+                      }
+                    });
                   }
+                } else if (value == 'delete') {
+                  unawaited(_confirmDelete(context, ref, expense));
                 }
-              : (_) {},
-          itemBuilder: (context) => expense != null
-              ? [
-                  PopupMenuItem(value: 'edit', child: Text('edit'.tr())),
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: Text(
-                      'delete'.tr(),
-                      style: TextStyle(color: theme.colorScheme.error),
-                    ),
+              }
+            : (_) {},
+        itemBuilder: (context) => expense != null
+            ? [
+                PopupMenuItem(value: 'edit', child: Text('edit'.tr())),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Text(
+                    'delete'.tr(),
+                    style: TextStyle(color: theme.colorScheme.error),
                   ),
-                ]
-              : [
-                  const PopupMenuItem<String>(
-                    value: '',
-                    enabled: false,
-                    child: SizedBox.shrink(),
-                  ),
-                ],
-        ),
+                ),
+              ]
+            : [
+                const PopupMenuItem<String>(
+                  value: '',
+                  enabled: false,
+                  child: SizedBox.shrink(),
+                ),
+              ],
+      ),
     ];
 
     final bodyReady = pagingReady || expense != null;

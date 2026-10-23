@@ -219,9 +219,9 @@ class _PhotoThumbnail extends StatelessWidget {
       );
     } else if (item.url != null && item.url!.isNotEmpty) {
       image = const SizedBox(
-          width: 80,
-          height: 80,
-          child: Icon(Icons.broken_image_outlined),
+        width: 80,
+        height: 80,
+        child: Icon(Icons.broken_image_outlined),
       );
     } else {
       image = const SizedBox(width: 80, height: 80);

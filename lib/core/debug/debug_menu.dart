@@ -151,7 +151,9 @@ class _DebugMenuSheetState extends ConsumerState<_DebugMenuSheet> {
 
   Future<void> _setCameraMock(bool enabled) async {
     ref.read(debugReceiptCameraMockProvider.notifier).state = enabled;
-    _setStatus(enabled ? 'Receipt camera mock enabled' : 'Receipt camera mock disabled');
+    _setStatus(
+      enabled ? 'Receipt camera mock enabled' : 'Receipt camera mock disabled',
+    );
   }
 
   Future<void> _setExtraAnimations(bool enabled) async {
@@ -160,7 +162,9 @@ class _DebugMenuSheetState extends ConsumerState<_DebugMenuSheet> {
     await ref
         .read(settings.provider(extraAnimationsEnabledSettingDef).notifier)
         .set(enabled);
-    _setStatus(enabled ? 'Extra animations enabled' : 'Extra animations disabled');
+    _setStatus(
+      enabled ? 'Extra animations enabled' : 'Extra animations disabled',
+    );
   }
 
   Future<void> _clearCelebrationDedupe() async {
@@ -326,10 +330,7 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 6),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
+      child: Text(label, style: Theme.of(context).textTheme.titleSmall),
     );
   }
 }

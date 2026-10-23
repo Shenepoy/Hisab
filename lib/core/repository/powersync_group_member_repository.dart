@@ -44,8 +44,7 @@ class PowerSyncGroupMemberRepository implements IGroupMemberRepository {
   }
 
   @override
-  Future<void> kickMember(String groupId, String memberId) =>
-      _unsupported();
+  Future<void> kickMember(String groupId, String memberId) => _unsupported();
 
   @override
   Future<void> leave(String groupId) => _unsupported();

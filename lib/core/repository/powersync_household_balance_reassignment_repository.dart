@@ -2,9 +2,7 @@ part of 'powersync_repository.dart';
 
 class PowerSyncHouseholdBalanceReassignmentRepository
     implements IHouseholdBalanceReassignmentRepository {
-  PowerSyncHouseholdBalanceReassignmentRepository(
-    this._db,
-  );
+  PowerSyncHouseholdBalanceReassignmentRepository(this._db);
 
   static const _uuid = Uuid();
   final PowerSyncDatabase _db;

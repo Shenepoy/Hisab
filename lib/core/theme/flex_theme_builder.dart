@@ -122,10 +122,7 @@ class FlexThemeBuilder {
       colorScheme: colorScheme,
       extensions: exts,
       pageTransitionsTheme: appPageTransitionsTheme(),
-      textTheme: _scaleTextTheme(
-        theme.textTheme,
-        scaleFactor,
-      ),
+      textTheme: _scaleTextTheme(theme.textTheme, scaleFactor),
       scrollbarTheme: alwaysShowScrollbars
           ? ScrollbarThemeData(
               thumbVisibility: WidgetStateProperty.all(true),

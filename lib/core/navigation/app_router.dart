@@ -113,7 +113,8 @@ GoRouter router(Ref ref) {
     refreshListenable: refreshNotifier,
     initialLocation: RoutePaths.home,
     redirect: (context, state) {
-      final onOnboarding = state.matchedLocation == RoutePaths.onboarding ||
+      final onOnboarding =
+          state.matchedLocation == RoutePaths.onboarding ||
           state.matchedLocation.startsWith('${RoutePaths.onboarding}/');
       final onPrivacyPolicy = state.matchedLocation == RoutePaths.privacyPolicy;
       if (!onboardingCompleted && !onOnboarding && !onPrivacyPolicy) {
@@ -140,10 +141,7 @@ GoRouter router(Ref ref) {
             child: child,
           );
         },
-        routes: [
-          ...getHomeRoutes(),
-          ...getSettingsRoutes(),
-        ],
+        routes: [...getHomeRoutes(), ...getSettingsRoutes()],
       ),
       ...getGroupRoutes(),
       ...getExpenseRoutes(),

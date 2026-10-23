@@ -14,7 +14,8 @@ String buildErrorReportText({
     ..writeln('Hisab local diagnostic')
     ..writeln('Locale: ${uiLocaleTag ?? 'unknown'}')
     ..writeln('Message: ${summaryEnglish ?? message}');
-  if (details != null && details.isNotEmpty) buffer.writeln('Details: $details');
+  if (details != null && details.isNotEmpty)
+    buffer.writeln('Details: $details');
   if (stackTrace != null) buffer.writeln('Stack trace:\n$stackTrace');
   return buffer.toString();
 }
