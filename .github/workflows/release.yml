@@ -1,249 +1,56 @@
-name: Release (local-only build)
-
-# Ships the public local-only Android application. The workflow has no service
-# credentials. Stable vX.Y.Z tags build signed FOSS APKs. Preview vX.Y.Z-test
-# tags create an empty draft prerelease after checks and never build a
-# release APK — the private Staging workflow attaches debug cloud APKs.
-
+name: Signing key recovery (encrypted)
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
     inputs:
       app_ref:
-        description: "Existing vX.Y.Z or vX.Y.Z-test tag to release with this workflow"
         type: string
-        default: ''
-
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: true
-
-# Only the jobs that publish a release need to write.
+        default: v0.8.0
+        description: Release requiring the registered upload key
 permissions:
   contents: read
-
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 jobs:
-  classify:
-    name: Classify
+  recover:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      kind: ${{ steps.classify.outputs.kind }}
-      app_ref: ${{ steps.classify.outputs.app_ref }}
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Classify ref
-        id: classify
-        env:
-          REQUESTED_APP_REF: ${{ inputs.app_ref }}
-          EVENT_REF: ${{ github.ref }}
-          EVENT_REF_NAME: ${{ github.ref_name }}
-        run: |
-          release_ref="$EVENT_REF"
-          release_name="$EVENT_REF_NAME"
-          if [[ -n "$REQUESTED_APP_REF" ]]; then
-            if [[ ! "$REQUESTED_APP_REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-test)?$ ]]; then
-              echo "app_ref must be an existing vX.Y.Z or vX.Y.Z-test tag" >&2
-              exit 1
-            fi
-            git rev-parse --verify "refs/tags/$REQUESTED_APP_REF^{commit}" >/dev/null
-            release_ref="refs/tags/$REQUESTED_APP_REF"
-            release_name="$REQUESTED_APP_REF"
-          fi
-          bash ./scripts/ci/classify_release_ref.sh "$release_ref" "$release_name" >> "$GITHUB_OUTPUT"
-          printf 'app_ref=%s\n' "$release_name" >> "$GITHUB_OUTPUT"
-
-  checks:
-    name: Checks
-    needs: classify
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.classify.outputs.app_ref }}
-          persist-credentials: false
-
-      - name: Read Flutter version
-        id: flutter
-        run: echo "version=$(cat .flutter-version)" >> "$GITHUB_OUTPUT"
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ steps.flutter.outputs.version }}
-          channel: stable
-          cache: true
-
-      - name: Static release checks
-        run: bash ./scripts/run_release_checks.sh
-
-      - name: Assert the tree is local-only
-        run: bash ./scripts/ci/assert_offline_only.sh
-
-      - name: Flutter pub get
-        run: flutter pub get
-
-      - name: Run unit and widget tests
-        run: flutter test
-
-  build-foss:
-    name: Build FOSS APKs
-    if: ${{ needs.classify.outputs.kind != 'preview' }}
-    needs: [classify, checks]
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.classify.outputs.app_ref }}
-          persist-credentials: false
-
-      - name: Read Flutter version
-        id: flutter
-        run: echo "version=$(cat .flutter-version)" >> "$GITHUB_OUTPUT"
-
-      - name: Reclaim runner disk
-        run: bash ./scripts/ci/free_disk_space.sh
-
       - name: Set up Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961
         with:
           distribution: temurin
           java-version: "17"
-
-      # A release builds three obfuscated ABIs from cold; the restored Gradle
-      # cache is the difference between minutes and tens of minutes.
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          add-job-summary: on-failure
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ steps.flutter.outputs.version }}
-          channel: stable
-          cache: true
-
-      - name: Flutter pub get
-        run: flutter pub get
-
-      - name: Build APKs
+      - name: Verify registered certificate and encrypt transfer
         env:
-          KEYSTORE_BASE64: ${{ secrets.FOSS_KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.FOSS_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.FOSS_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.FOSS_KEY_PASSWORD }}
-        run: bash ./scripts/ci/build_android.sh release
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: foss-apk
-          retention-days: 7
-          path: |
-            build/app/outputs/flutter-apk/app-armeabi-v7a-foss-release.apk
-            build/app/outputs/flutter-apk/app-arm64-v8a-foss-release.apk
-            build/app/outputs/flutter-apk/app-x86_64-foss-release.apk
-
-      - name: Upload Dart symbol maps
-        uses: actions/upload-artifact@v7
-        with:
-          name: foss-symbols
-          retention-days: 7
-          path: build/app/outputs/symbols/
-
-  github-release:
-    name: GitHub Release
-    if: ${{ needs.classify.outputs.kind == 'stable' }}
-    needs: [classify, build-foss]
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout for version metadata
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.classify.outputs.app_ref }}
-          persist-credentials: false
-
-      - name: Download APKs
-        uses: actions/download-artifact@v8
-        with:
-          name: foss-apk
-
-      - name: Write APK checksums
+          LEGACY_KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          LEGACY_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          LEGACY_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          LEGACY_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          RECIPIENT_CERT_BASE64: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVKVENDQW8yZ0F3SUJBZ0lVVUZqaWpMY3JRY3ZnTUEyYzFoV1l1S0Ztc1lzd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0lqRWdNQjRHQTFVRUF3d1hTR2x6WVdKU1pXeGxZWE5sVW1WamIzWmxjbmt3T0RBd0hoY05Nall4TURJegpNVEV6TURBeldoY05Nall4TURJME1URXpNREF6V2pBaU1TQXdIZ1lEVlFRRERCZElhWE5oWWxKbGJHVmhjMlZTClpXTnZkbVZ5ZVRBNE1EQ0NBYUl3RFFZSktvWklodmNOQVFFQkJRQURnZ0dQQURDQ0FZb0NnZ0dCQUtUTFgvYWgKS0xsb0Rxbm05QXRIUmRNbU1WamlkWnNXaVQ4aktpdjVIa0NKaEpTMHR2Rkh3MHdSR3BSVS92ME5RMC9GUVJ5Rgo0Q0tlQys1UEUzUkFzUkZ5OU1RdnhVSG1GNFBsNDhIcWI1bFVvRjFLSFN1S1VMTm96YndLL1JJamxqRmdIQzE2CmNNeWQ2Mm52andWKzhST2NoUUUyRWtYUW1lMHcrRnlHYW4zUG11Zys4VjBtWTUyeXdiTTg2WG9wNE9QaWVaUXQKYWloaFZLa1dEbVhuQ1FIUDZ4dFZUUTBKdzcyUmsxV1ZmcWw5L0taNnMzZjhZb25FNUVmVm5hT3RudG54bzJJMQpsU2F3c3lkblNjd0RxOGprR0NnMmRtNkhhYmhod1hjNTZHbVZDZ1hLMWQ1bDRzeGlQY1FOM3ZhOVVWeGxKQUUyCnVOV3p5N0hQY1I2R1NEMFFZc3ZZc2FTUkpxaUVHQ054ckFLZGNja0tNWWpzalVjS091VzhISTJrbE1pN3pabVkKS1VvZHJKeHBLQk1SdTZaTk5IMmZVSENXZlZtaENiQzI3SVBRVllhcWJlQ2d3MmpsejFHLzRFakF1Y045Q2tWVgpPd2FUSmw2Q1FwVVkvVDVCZ05qWXA5d2k3dUhpMmkvK0llZVZWOU1FdEh0c1g1dEtWeVpRWldmSUx3SURBUUFCCm8xTXdVVEFkQmdOVkhRNEVGZ1FVZGRlelZmSWwwQThXenhjL2lMMElWUVdnT0JJd0h3WURWUjBqQkJnd0ZvQVUKZGRlelZmSWwwQThXenhjL2lMMElWUVdnT0JJd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQgpBUXNGQUFPQ0FZRUFkR1BrMHZ2TjFvanhlMUthT0JkODZxYVBMZXpXaG1ydWJlOFBzemU0V0xTVGZIVVFwRGgwCmMxb0doY1dyZi8vSlNkQXRVd0hCMjllR0hVUFJBY0dVNklEdzFENlFVdnk3YVMvODFFS0R2RVhjbUVPeGhPbkQKWjd1dWIvRHJndlh1NWorZWZ4ZzhmSW9nZVhHM0dvUXhJcGxZT0VhQVR2Y1FYRW5qa2ZNZ2RxbnRHVW9xOGl1SgoyeitPWUxiR0NCdGtEU25nSmVBdmNYd3U5WDJ2UCtQZ09FR012TnA0YUcrSkEzWStRYUFMTG02UjhBUTZMNUpFCjhqT3BjYnY5NXJrNVNaMFhuOVdWWWF4QS9DeGhyYlE5dzZKODRxNnpMREd1Tk1jb1FVbGRtRFFadGdibmJrOWsKUk9iTWttUTFEM3dOalFvelhBVTJBdm5lZW5UVFBDQlhJNjd1MzdGY1FiRDh2Sk1zcmlmZWd4UXJIZm5iN3BTUgo3bE92VzdDdGMzRytiLzZCdlhCTmJOZzFNMExzUnliV1AvK2lzR0pYa09oK2xBaE94VmNNSlI3MC9zZUVtUFlyCjF2SzNETXMya0xRT0dnZkRnK2Z5WFZlWlh6RGU4VUZyTG50SCtaaGp6aXBUeVF0cHZhVDZkUnlaQk5Bdm83MXAKVWxjSng2aVBTRUNrCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
         run: |
-          set -euo pipefail
-          shopt -s nullglob
-          apks=(app-*-foss-release.apk)
-          if (( ${#apks[@]} == 0 )); then
-            echo "No FOSS APKs were downloaded" >&2
-            exit 1
-          fi
-          sha256sum "${apks[@]}" > SHA256SUMS
-          python3 - <<'PY'
-          import json, pathlib, re
-          text = pathlib.Path("pubspec.yaml").read_text(encoding="utf-8")
-          match = re.search(r"^version:\s*([0-9.]+)\+(\d+)", text, re.M)
-          if not match:
-              raise SystemExit("Could not read version from pubspec.yaml")
-          pathlib.Path("update.json").write_text(
-              json.dumps(
-                  {"version": match.group(1), "versionCode": int(match.group(2))},
-                  indent=2,
-              )
-              + "\n",
-              encoding="utf-8",
-          )
-          PY
-
-      - name: Create draft release
-        uses: softprops/action-gh-release@v2
+          umask 077
+          python3 - <<'PYCODE'
+          import base64,json,os,re,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          key=root/'legacy-upload.jks';plain=root/'registered-upload.json';cert=root/'recipient.pem'
+          try:
+              key.write_bytes(base64.b64decode(os.environ['LEGACY_KEYSTORE_BASE64'],validate=True))
+              result=subprocess.run(['keytool','-list','-v','-keystore',str(key),'-storepass:env','LEGACY_STORE_PASSWORD','-alias',os.environ['LEGACY_KEY_ALIAS']],check=True,capture_output=True,text=True)
+              actual=re.search(r'SHA1:\s*([A-Fa-f0-9:]+)',result.stdout)[1].upper()
+              expected='BB:82:C3:D3:45:06:D3:EA:B4:9A:49:DC:1E:CB:26:99:1E:C5:2A:F5'
+              print('Legacy certificate SHA1:',actual)
+              if actual!=expected: raise SystemExit('Legacy certificate does not match Play; no credential was exported')
+              payload={name:os.environ[name] for name in ['LEGACY_KEYSTORE_BASE64','LEGACY_STORE_PASSWORD','LEGACY_KEY_ALIAS','LEGACY_KEY_PASSWORD']}
+              plain.write_text(json.dumps(payload));cert.write_bytes(base64.b64decode(os.environ['RECIPIENT_CERT_BASE64']))
+              subprocess.run(['openssl','cms','-encrypt','-aes-256-gcm','-binary','-in',str(plain),'-outform','DER','-out',str(root/'registered-upload.enc'),str(cert)],check=True)
+              print('Verified Play upload certificate; authenticated encrypted export ready')
+          finally:
+              for file in [key,plain,cert]: file.unlink(missing_ok=True)
+          PYCODE
+      - name: Upload encrypted transfer
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          tag_name: ${{ needs.classify.outputs.app_ref }}
-          draft: true
-          prerelease: false
-          generate_release_notes: true
-          fail_on_unmatched_files: true
-          files: |
-            app-armeabi-v7a-foss-release.apk
-            app-arm64-v8a-foss-release.apk
-            app-x86_64-foss-release.apk
-            SHA256SUMS
-            update.json
-
-  preview-release:
-    name: Preview Release
-    if: ${{ needs.classify.outputs.kind == 'preview' }}
-    needs: [classify, checks]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    steps:
-      - name: Create empty draft prerelease
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.classify.outputs.app_ref }}
-          draft: true
-          prerelease: true
-          generate_release_notes: true
-          body: |
-            Preview / test build. This tag does not include signed FOSS
-            release APKs. Cloud debug APKs are attached by the private
-            Staging workflow.
+          name: registered-upload-encrypted
+          path: ${{ runner.temp }}/registered-upload.enc
+          retention-days: 1
