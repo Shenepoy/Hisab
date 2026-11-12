@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/layout/layout_breakpoints.dart';
@@ -144,9 +144,8 @@ class _DateTimePickerSheetContentState
   }
 
   void _setToYesterday() {
-    final yesterday = monthGalleryDateOnly(
-      DateTime.now(),
-    ).subtract(const Duration(days: 1));
+    final yesterday = monthGalleryDateOnly(DateTime.now())
+        .subtract(const Duration(days: 1));
     final day = yesterday.isBefore(_firstDateOnly)
         ? _firstDateOnly
         : (yesterday.isAfter(_maxDateOnly) ? _maxDateOnly : yesterday);

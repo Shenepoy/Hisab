@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Log-level colors for terminal-style log viewers (e.g. logs viewer dialog).
 /// Uses brightness to pick dark/light variants so they work with app theme.

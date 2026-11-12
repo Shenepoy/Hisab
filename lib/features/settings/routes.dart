@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+
 import '../../../core/navigation/app_page.dart';
 import '../../../core/navigation/route_paths.dart';
 import 'pages/settings_page.dart';

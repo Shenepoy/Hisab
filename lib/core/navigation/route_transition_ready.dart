@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 bool _animationAlreadyFinished(Animation<double> animation) {
   // Prefer status, but also accept value==1 (e.g. AlwaysStoppedAnimation in tests

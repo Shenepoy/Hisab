@@ -1,9 +1,10 @@
 import 'package:currency_picker/currency_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import '../../../core/celebration/celebration_controller.dart';
 import '../../../core/celebration/celebration_kind.dart';
 import '../../../core/layout/content_aligned_app_bar.dart';
@@ -31,7 +32,9 @@ import '../../../core/widgets/user_text.dart';
 import '../../../core/widgets/toast.dart';
 import '../../../core/widgets/wizard_step_enter.dart';
 import '../../../domain/domain.dart';
+
 import 'package:hisab/core/settings/providers/settings_framework_providers.dart';
+
 import '../utils/group_icon_utils.dart';
 import '../widgets/group_color_picker.dart';
 import '../widgets/settlement_method_picker.dart';
@@ -828,9 +831,8 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage>
           ),
           Text(
             '${_currentPage + 1} / $_pageCount',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: colorScheme.onSurfaceVariant),
           ),
           Expanded(
             child: Align(
@@ -975,9 +977,8 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage>
                     decoration: InputDecoration(
                       labelText: 'budget_amount'.tr(),
                       hintText:
-                          CurrencyHelpers.fromCode(
-                            _selectedCurrency.code,
-                          )?.symbol ??
+                          CurrencyHelpers.fromCode(_selectedCurrency.code)
+                              ?.symbol ??
                           _selectedCurrency.code,
                       border: const OutlineInputBorder(),
                       prefixIcon: const Icon(

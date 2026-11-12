@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hisab/domain/domain.dart';
@@ -63,21 +63,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([testExpense])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(testExpense)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([testExpense])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(testExpense)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -124,21 +119,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([multiExpense])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(multiExpense)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(multiParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([multiExpense])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(multiExpense)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(multiParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -174,21 +164,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([income])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(income)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([income])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(income)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -233,21 +218,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([transfer])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(transfer)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([transfer])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(transfer)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -272,19 +252,15 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([testExpense])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(testExpense)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testParticipants)),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([testExpense])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(testExpense)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testParticipants)),
           futureGroupProvider(groupId).overrideWithValue(const AsyncLoading()),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -317,21 +293,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([testExpense])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(testExpense)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(personalGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([testExpense])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(testExpense)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(personalGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(
@@ -400,21 +371,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([householdExpense])),
-          futureExpenseProvider(
-            expenseId,
-          ).overrideWithValue(AsyncValue.data(householdExpense)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(householdParticipants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([householdExpense])),
+          futureExpenseProvider(expenseId)
+              .overrideWithValue(AsyncValue.data(householdExpense)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(householdParticipants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(

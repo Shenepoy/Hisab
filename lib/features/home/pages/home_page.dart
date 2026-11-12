@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safaeh/safaeh.dart';
+
 import '../../../core/build_env.dart';
 import '../../../core/layout/content_aligned_app_bar.dart';
 import '../../../core/layout/content_aligned_fab_location.dart';
@@ -20,8 +21,10 @@ import '../../../core/widgets/sheet_option_tile.dart';
 import '../../../core/widgets/shell_menu_button.dart';
 import '../../../core/widgets/user_text.dart';
 import '../../groups/providers/groups_provider.dart';
+
 import 'package:hisab/core/settings/providers/settings_framework_providers.dart';
 import 'package:hisab/core/settings/settings_definitions.dart';
+
 import '../../settings/widgets/apply_setting.dart';
 import '../../groups/widgets/group_card.dart';
 import '../../groups/widgets/group_section_header.dart';
@@ -526,9 +529,9 @@ class HomePage extends ConsumerWidget {
                                           child: Icon(
                                             Icons.group_outlined,
                                             size: 34,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                           ),
                                         ),
                                         const SizedBox(height: 16),
@@ -549,9 +552,9 @@ class HomePage extends ConsumerWidget {
                                               .textTheme
                                               .bodyMedium
                                               ?.copyWith(
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.onSurfaceVariant,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
                                               ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -735,9 +738,9 @@ class HomePage extends ConsumerWidget {
                                   'no_groups'.tr(),
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurfaceVariant,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
                                       ),
                                   textAlign: TextAlign.center,
                                 ),

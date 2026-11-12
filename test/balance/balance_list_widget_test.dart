@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +9,7 @@ import 'package:hisab/features/balance/providers/balance_provider.dart';
 import 'package:hisab/features/balance/widgets/balance_list.dart';
 import 'package:hisab/features/groups/providers/group_member_provider.dart';
 import 'package:hisab/features/groups/widgets/settlement_method_picker.dart';
+
 import '../widget_test_helpers.dart';
 
 void main() {
@@ -90,9 +91,8 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          groupBalanceProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(fakeResult)),
+          groupBalanceProvider(groupId)
+              .overrideWithValue(AsyncValue.data(fakeResult)),
           myMemberInGroupProvider(
             groupId,
           ).overrideWithValue(myMemberOverride ?? const AsyncValue.data(null)),

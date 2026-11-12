@@ -26,9 +26,11 @@ String? webVisibleAppRoutePath() {
 String visibleRoutePath(BuildContext context) {
   final fromBrowser = webVisibleAppRoutePath();
   if (fromBrowser != null) return fromBrowser;
-  return GoRouter.maybeOf(
-        context,
-      )?.routerDelegate.currentConfiguration.uri.path ??
+  return GoRouter.maybeOf(context)
+          ?.routerDelegate
+          .currentConfiguration
+          .uri
+          .path ??
       '';
 }
 

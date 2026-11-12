@@ -9,8 +9,10 @@ import 'package:uuid/uuid.dart';
 import '../../../core/database/database_providers.dart';
 import '../../../core/repository/repository_providers.dart';
 import '../../../domain/domain.dart';
+
 import 'package:hisab/core/settings/providers/settings_framework_providers.dart';
 import 'package:hisab/core/settings/settings_definitions.dart';
+
 import '../domain/draft_transaction.dart';
 import '../domain/scanner_category_rule.dart';
 import '../domain/scanner_notification_log.dart';
@@ -211,13 +213,10 @@ class ScannerController {
           id: 'builtin_bank_ar_1',
           name: 'scanner_pattern_bank_ar',
           senderMatch: '*',
-          amountRegex:
-              r'(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?)\s*(?:\u0631\.\u0633|\u0631\u064A\u0627\u0644|\u062F.\u0625|\u062F\u0631\u0647\u0645)',
-          currencyRegex:
-              r'(\u0631.\u0633|\u0631\u064A\u0627\u0644|\u062F.\u0625|\u062F\u0631\u0647\u0645|\u062F.\u0643|\u062F.\u0628|\u0631.\u0639|\u0631.\u0642|\u062C.\u0645)',
+          amountRegex: r'(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?)\s*(?:\u0631\.\u0633|\u0631\u064A\u0627\u0644|\u062F.\u0625|\u062F\u0631\u0647\u0645)',
+          currencyRegex: r'(\u0631.\u0633|\u0631\u064A\u0627\u0644|\u062F.\u0625|\u062F\u0631\u0647\u0645|\u062F.\u0643|\u062F.\u0628|\u0631.\u0639|\u0631.\u0642|\u062C.\u0645)',
           cardRegex: r'\*(\d{4})',
-          merchantRegex:
-              r'(?:\u0639\u0646\u062F|\u0641\u064A|\u0644\u062F\u0649)\s+(.+?)(?:\s|$)',
+          merchantRegex: r'(?:\u0639\u0646\u062F|\u0641\u064A|\u0644\u062F\u0649)\s+(.+?)(?:\s|$)',
           isBuiltIn: true,
           createdAt: now,
         ),
@@ -452,9 +451,9 @@ class ScannerController {
       }
 
       final participantRepo = _ref.read(participantRepositoryProvider);
-      final participants = (await participantRepo.getByGroupId(
-        groupId,
-      )).where((p) => p.leftAt == null).toList();
+      final participants = (await participantRepo.getByGroupId(groupId))
+          .where((p) => p.leftAt == null)
+          .toList();
       if (participants.isEmpty) {
         Log.warning('No participant in group $groupId');
         return false;

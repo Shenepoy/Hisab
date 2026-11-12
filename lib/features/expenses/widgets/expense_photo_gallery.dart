@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../core/layout/responsive_sheet.dart';
 import '../../../core/receipt/receipt_image_compress.dart';
@@ -192,9 +192,8 @@ class _ExpensePhotoGalleryDialogState
                     children: [
                       IconButton(
                         onPressed: _busy ? null : _close,
-                        tooltip: MaterialLocalizations.of(
-                          context,
-                        ).closeButtonTooltip,
+                        tooltip: MaterialLocalizations.of(context)
+                            .closeButtonTooltip,
                         icon: const Icon(Icons.close, color: Colors.white),
                       ),
                       Expanded(
@@ -362,9 +361,8 @@ class _ToolButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(
-                  context,
-                ).textTheme.labelSmall?.copyWith(color: color),
+                style: Theme.of(context).textTheme.labelSmall
+                    ?.copyWith(color: color),
               ),
             ],
           ),
@@ -438,9 +436,8 @@ class _BrokenPhoto extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'image_unavailable'.tr(),
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+          style: Theme.of(context).textTheme.bodyMedium
+              ?.copyWith(color: Colors.white70),
         ),
       ],
     );

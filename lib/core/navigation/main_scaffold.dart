@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +10,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:safaeh/safaeh.dart';
+
 import '../../features/home/pages/home_page.dart';
 import '../../features/home/routes.dart';
 import '../../features/settings/pages/settings_page.dart';
@@ -116,9 +117,11 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   bool _handleAndroidBack(bool stopDefaultButtonEvent, RouteInfo info) {
     if (!mounted) return false;
-    final path = GoRouter.maybeOf(
-      context,
-    )?.routerDelegate.currentConfiguration.uri.path;
+    final path = GoRouter.maybeOf(context)
+        ?.routerDelegate
+        .currentConfiguration
+        .uri
+        .path;
     final onSettings =
         path == RoutePaths.settings ||
         path?.startsWith('${RoutePaths.settings}/') == true;
@@ -247,17 +250,21 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   }
 
   Widget _wrapWithBackHandler(Widget child) {
-    final currentPath = GoRouter.of(
-      context,
-    ).routerDelegate.currentConfiguration.uri.path;
+    final currentPath = GoRouter.of(context)
+        .routerDelegate
+        .currentConfiguration
+        .uri
+        .path;
     final shouldIntercept = _isManagedBackPath(currentPath);
     return PopScope(
       canPop: !shouldIntercept,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        final latestPath = GoRouter.of(
-          context,
-        ).routerDelegate.currentConfiguration.uri.path;
+        final latestPath = GoRouter.of(context)
+            .routerDelegate
+            .currentConfiguration
+            .uri
+            .path;
         if (_isManagedBackPath(latestPath)) {
           _handleManagedBack(latestPath);
         }

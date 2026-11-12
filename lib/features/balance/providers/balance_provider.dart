@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
+
 import '../../../core/services/settle_up_service.dart';
 import '../../../core/services/household_service.dart';
 import '../../../domain/domain.dart';

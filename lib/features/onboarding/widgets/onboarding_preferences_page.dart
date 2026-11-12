@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_settings_framework/flutter_settings_framework.dart';
@@ -9,8 +9,10 @@ import '../../../core/theme/flex_theme_builder.dart'
     show flexSchemeOptionIds, primaryColorForSchemeId;
 import '../../../core/utils/currency_helpers.dart';
 import '../../../core/widgets/sheet_helpers.dart';
+
 import 'package:hisab/core/settings/providers/settings_framework_providers.dart';
 import 'package:hisab/core/settings/settings_definitions.dart';
+
 import 'onboarding_shared.dart';
 
 /// Predefined theme schemes only (no custom) for simpler onboarding.
@@ -86,10 +88,8 @@ List<Widget> _buildPreferencesTiles(
         children: [
           Text(
             'display_currency_hint'.tr(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.3,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.3),
           ),
           const SizedBox(height: ThemeConfig.spacingXS),
           Text(
@@ -136,10 +136,8 @@ List<Widget> _buildPreferencesTiles(
       title: 'use_24_hour_format'.tr(),
       subtitle: Text(
         'use_24_hour_format_description'.tr(),
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          height: 1.3,
-        ),
+        style: Theme.of(context).textTheme.bodySmall
+            ?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.3),
       ),
       trailing: Switch(
         value: use24h,
@@ -162,10 +160,8 @@ List<Widget> _buildPreferencesTiles(
         children: [
           Text(
             'font_size_description'.tr(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.3,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.3),
           ),
           const SizedBox(height: ThemeConfig.spacingXS),
           Text(
@@ -222,10 +218,8 @@ List<Widget> _buildPreferencesTiles(
         children: [
           Text(
             'color_scheme_description'.tr(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
-              height: 1.3,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.3),
           ),
           const SizedBox(height: ThemeConfig.spacingXS),
           Text(
@@ -284,10 +278,8 @@ List<Widget> _buildPreferencesTiles(
       title: 'subtle_accents'.tr(),
       subtitle: Text(
         'subtle_accents_description'.tr(),
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          height: 1.3,
-        ),
+        style: Theme.of(context).textTheme.bodySmall
+            ?.copyWith(color: colorScheme.onSurfaceVariant, height: 1.3),
       ),
       trailing: Switch(
         value: subtleAccents,

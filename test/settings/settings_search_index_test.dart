@@ -11,12 +11,12 @@ void main() {
   late SearchIndex index;
 
   setUpAll(() async {
-    final enRaw =
-        jsonDecode(await rootBundle.loadString('assets/translations/en.json'))
-            as Map;
-    final arRaw =
-        jsonDecode(await rootBundle.loadString('assets/translations/ar.json'))
-            as Map;
+    final enRaw = jsonDecode(
+      await rootBundle.loadString('assets/translations/en.json'),
+    ) as Map;
+    final arRaw = jsonDecode(
+      await rootBundle.loadString('assets/translations/ar.json'),
+    ) as Map;
     final en = enRaw.map((k, v) => MapEntry(k.toString(), v?.toString() ?? ''));
     final ar = arRaw.map((k, v) => MapEntry(k.toString(), v?.toString() ?? ''));
 

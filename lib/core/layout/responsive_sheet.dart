@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safaeh/safaeh.dart';
 
@@ -49,9 +49,11 @@ Future<T?> showResponsiveSheet<T>({
   bool centerInFullViewport = true,
   EdgeInsetsGeometry? contentPadding,
 }) {
-  final pathWhenOpened = GoRouter.of(
-    context,
-  ).routerDelegate.currentConfiguration.uri.path;
+  final pathWhenOpened = GoRouter.of(context)
+      .routerDelegate
+      .currentConfiguration
+      .uri
+      .path;
 
   return showSafaeh<T>(
     context: context,
@@ -97,9 +99,11 @@ Future<T?> showAppDialog<T>({
   bool centerInFullViewport = true,
   bool fadeScale = true,
 }) {
-  final pathWhenOpened = GoRouter.of(
-    context,
-  ).routerDelegate.currentConfiguration.uri.path;
+  final pathWhenOpened = GoRouter.of(context)
+      .routerDelegate
+      .currentConfiguration
+      .uri
+      .path;
 
   return showSafaehDialog<T>(
     context: context,

@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hisab/domain/domain.dart';
 import 'package:hisab/features/expenses/widgets/expense_bill_breakdown_section.dart';

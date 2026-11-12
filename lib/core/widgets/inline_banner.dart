@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Severity of an [InlineBanner], which picks its colours and default icon.
 enum InlineBannerTone {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Central theme configuration for the Hisab app.
 class ThemeConfig {

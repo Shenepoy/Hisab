@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -63,21 +63,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(group)),
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(<Expense>[])),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(participants)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-          myMemberInGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(null)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(group)),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(<Expense>[])),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(participants)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+          myMemberInGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(null)),
         ],
         child: EasyLocalization(
           path: 'assets/translations',
@@ -180,21 +175,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(group)),
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(expenses)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(participants)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-          myMemberInGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(null)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(group)),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(expenses)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(participants)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+          myMemberInGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(null)),
         ],
         child: EasyLocalization(
           path: 'assets/translations',
@@ -298,21 +288,16 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(group)),
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(expenses)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(participants)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-          myMemberInGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(null)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(group)),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(expenses)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(participants)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+          myMemberInGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(null)),
         ],
         child: EasyLocalization(
           path: 'assets/translations',
@@ -366,21 +351,16 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            futureGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data(group)),
-            expensesByGroupProvider(
-              groupId,
-            ).overrideWithValue(const AsyncValue.data(<Expense>[])),
-            participantsByGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data(participants)),
-            tagsByGroupProvider(
-              groupId,
-            ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-            myMemberInGroupProvider(
-              groupId,
-            ).overrideWithValue(const AsyncValue.data(null)),
+            futureGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data(group)),
+            expensesByGroupProvider(groupId)
+                .overrideWithValue(const AsyncValue.data(<Expense>[])),
+            participantsByGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data(participants)),
+            tagsByGroupProvider(groupId)
+                .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+            myMemberInGroupProvider(groupId)
+                .overrideWithValue(const AsyncValue.data(null)),
           ],
           child: EasyLocalization(
             path: 'assets/translations',

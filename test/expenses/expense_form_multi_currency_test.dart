@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -79,24 +79,18 @@ void main() {
               fakeParticipantRepo,
             ),
             expenseRepositoryProvider.overrideWithValue(fakeExpenseRepo),
-            futureGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data(group)),
-            participantsByGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data([participant])),
-            activeParticipantsByGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data([participant])),
-            tagsByGroupProvider(
-              groupId,
-            ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-            myRoleInGroupProvider(
-              groupId,
-            ).overrideWithValue(const AsyncValue.data(GroupRole.owner)),
-            myMemberInGroupProvider(
-              groupId,
-            ).overrideWithValue(AsyncValue.data(member)),
+            futureGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data(group)),
+            participantsByGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data([participant])),
+            activeParticipantsByGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data([participant])),
+            tagsByGroupProvider(groupId)
+                .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+            myRoleInGroupProvider(groupId)
+                .overrideWithValue(const AsyncValue.data(GroupRole.owner)),
+            myMemberInGroupProvider(groupId)
+                .overrideWithValue(AsyncValue.data(member)),
           ],
           child: EasyLocalization(
             path: 'assets/translations',
@@ -160,24 +154,18 @@ void main() {
           groupRepositoryProvider.overrideWithValue(fakeGroupRepo),
           participantRepositoryProvider.overrideWithValue(fakeParticipantRepo),
           expenseRepositoryProvider.overrideWithValue(fakeExpenseRepo),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(group)),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([participant])),
-          activeParticipantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([participant])),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
-          myRoleInGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data(GroupRole.owner)),
-          myMemberInGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(member)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(group)),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([participant])),
+          activeParticipantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([participant])),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(<ExpenseTag>[])),
+          myRoleInGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data(GroupRole.owner)),
+          myMemberInGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(member)),
         ],
         child: EasyLocalization(
           path: 'assets/translations',

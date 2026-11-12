@@ -174,10 +174,9 @@ jobs:
       - name: Assert the tree is local-only
         run: bash ./scripts/ci/assert_offline_only.sh
 
-      # --no-wasm-dry-run: the dry run only reports incompatibilities in
-      # packages we do not control, and is not free.
+      # Compile Wasm and JavaScript fallback, including content-hashed assets.
       - name: Build web
-        run: flutter build web --no-wasm-dry-run
+        run: bash ./scripts/ci/build_web.sh
 
   offline-build-ios:
     name: Offline Build Guard (iOS)

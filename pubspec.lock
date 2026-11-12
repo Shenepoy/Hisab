@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.3"
+  camera_cutout:
+    dependency: transitive
+    description:
+      name: camera_cutout
+      sha256: b2ddce1ccfaa3ffd6aaea45ca8dee175c3474770cbfb1badd5529539eeff41f4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   camera_platform_interface:
     dependency: transitive
     description:
@@ -249,6 +257,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  cupertino_ui:
+    dependency: transitive
+    description:
+      name: cupertino_ui
+      sha256: "369e39a1c5c030a6212589c3da1809920b1c2cfade7b02aade7695bfa4b88c3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.6"
   currency_picker:
     dependency: "direct main"
     description:
@@ -261,10 +277,10 @@ packages:
     dependency: "direct main"
     description:
       name: custom_sliding_segmented_control
-      sha256: bc747b1500284bff36fc8c61774c9a3ca35c1dca4d570141c8a2569b4f984bf3
+      sha256: "5783e78bb8976db81145f51de5777495bdc878a71992b89c01ceb64d9e91ec43"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.5"
+    version: "2.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -437,26 +453,26 @@ packages:
     dependency: "direct main"
     description:
       name: flex_color_picker
-      sha256: a0979dd61f21b634717b98eb4ceaed2bfe009fe020ce8597aaf164b9eeb57aaa
+      sha256: f3cac22c1d5af8b355faa9a8146ae81b441664d499475c7a2690c933cf1c673e
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.0"
+    version: "4.0.0"
   flex_color_scheme:
     dependency: "direct main"
     description:
       name: flex_color_scheme
-      sha256: ab854146f201d2d62cc251fd525ef023b84182c4a0bfe4ae4c18ffc505b412d3
+      sha256: "77973145524ae7aab669cd1debe4971f4ec256771b205f3da1ac33f147df5f79"
       url: "https://pub.dev"
     source: hosted
-    version: "8.4.0"
+    version: "9.0.0"
   flex_seed_scheme:
     dependency: transitive
     description:
       name: flex_seed_scheme
-      sha256: a3183753bbcfc3af106224bff3ab3e1844b73f58062136b7499919f49f3667e7
+      sha256: "08f9ee11f9a08c2dee76d0a07ea824c8a09ea4db9456e32ac4f6dfb34d28392c"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -539,12 +555,11 @@ packages:
   flutter_logging_service:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.2.2"
-      resolved-ref: "3e19a8b022f08dc6bd3203b138cdd502ff200682"
-      url: "https://github.com/Zyzto/siglat.git"
-    source: git
-    version: "0.2.2"
+      name: flutter_logging_service
+      sha256: "591be962db215894e5c98d25b93a03bf92c7a815d9e8971ca525fd620f0e666f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -612,12 +627,11 @@ packages:
   flutter_settings_framework:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.8.0"
-      resolved-ref: "34f322a68c979dde605ac1e933f64c531881bafa"
-      url: "https://github.com/Zyzto/edadat.git"
-    source: git
-    version: "0.8.0"
+      name: flutter_settings_framework
+      sha256: "932974bef534b9713e11348b14b375888c410d23ae86344c938a8ecd1665bcdf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -902,6 +916,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.0"
+  material_ui:
+    dependency: "direct main"
+    description:
+      name: material_ui
+      sha256: "474c135fd46b56ff1d35ca982155e8863d28fbc6464d1192acf4ee53a738680e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.11.0"
   mcp_dart:
     dependency: transitive
     description:
@@ -1225,12 +1247,11 @@ packages:
   safaeh:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.2.5"
-      resolved-ref: "38ba3370bbc758223f3eb99efeac10d8c2907058"
-      url: "https://github.com/Zyzto/Safaeh.git"
-    source: git
-    version: "0.2.5"
+      name: safaeh
+      sha256: "61726a539c4c7e6a038f867ad744eaa0b054b3c7b277ffde70cad4667bb3ceb3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   share_plus:
     dependency: "direct main"
     description:
@@ -1448,10 +1469,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
+      sha256: "0a10344e901e5b2e63819567951cb6a06673ed6b84f40462188ff5a0c41f371f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.12"
+    version: "0.7.14"
   toastification:
     dependency: transitive
     description:
@@ -1512,10 +1533,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
+      sha256: fa49e1674cb84acb900141714e6c6e1f9ae099827c24d141430ff6819db4e1bc
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.2"
+    version: "2.4.4"
   vm_service:
     dependency: transitive
     description:
@@ -1605,5 +1626,5 @@ packages:
     source: hosted
     version: "3.1.4"
 sdks:
-  dart: ">=3.12.0 <4.0.0"
-  flutter: ">=3.44.0"
+  dart: ">=3.14.0 <4.0.0"
+  flutter: ">=3.50.0"

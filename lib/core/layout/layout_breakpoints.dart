@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Central breakpoints and helpers for responsive layout (web desktop, tablet).
 /// Use width-based checks only; mobile layout is unchanged below [breakpointTablet].

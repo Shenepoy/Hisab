@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
+
 import '../widgets/toast.dart';
 
 /// Runs [future] and on catch logs [logMessage] with [Log.warning].

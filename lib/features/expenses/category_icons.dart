@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+
 import '../../../domain/domain.dart';
 
 /// Preset expense categories with Material icons. [id] is stored when selected.

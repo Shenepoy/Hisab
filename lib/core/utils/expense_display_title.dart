@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../domain/domain.dart';
 
-typedef ExpenseTitleTranslate =
-    String Function(String key, {Map<String, String>? namedArgs});
+typedef ExpenseTitleTranslate = String Function(
+  String key, {
+  Map<String, String>? namedArgs,
+});
 
 String _defaultTranslate(String key, {Map<String, String>? namedArgs}) =>
     key.tr(namedArgs: namedArgs);

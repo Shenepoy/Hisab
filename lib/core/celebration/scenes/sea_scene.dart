@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../celebration_fx.dart';
 import 'biome_scene_base.dart';
@@ -82,9 +82,8 @@ class SeaScene extends BiomeSceneBase {
     for (var i = 0; i < 7; i++) {
       final phase = (t * 1.1 + i * 0.14) % 1.0;
       final r = (40 + phase * math.min(w, h) * 0.55) * grow;
-      ripple.color = const Color(
-        0xFF4FC3F7,
-      ).withValues(alpha: (1 - phase) * 0.45 * a);
+      ripple.color = const Color(0xFF4FC3F7)
+          .withValues(alpha: (1 - phase) * 0.45 * a);
       canvas.drawCircle(Offset(cx, cy), r, ripple);
     }
 

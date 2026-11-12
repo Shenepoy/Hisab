@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_settings_framework/flutter_settings_framework.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../secure_settings_storage.dart';
 import '../settings_definitions.dart';
 import '../../theme/flex_theme_builder.dart' show defaultThemeSchemeId;

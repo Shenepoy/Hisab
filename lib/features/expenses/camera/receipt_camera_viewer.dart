@@ -3,8 +3,9 @@ import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
+
 import '../../../core/motion/app_motion.dart';
 import '../../../core/widgets/sheet_helpers.dart';
 import '../../../core/widgets/toast.dart';
@@ -1844,9 +1845,8 @@ class _EmptyState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.bodyLarge
+                  ?.copyWith(color: Colors.white),
             ),
             const SizedBox(height: 24),
             if (extra != null) ...[extra!, const SizedBox(height: 12)],

@@ -244,12 +244,10 @@ bool _settingBlockIsHidden(String source, int offset) {
 }
 
 List<String> _presetCategoryIds() {
-  final source = File(
-    'lib/features/expenses/category_icons.dart',
-  ).readAsStringSync();
-  final block = RegExp(
-    r'presetCategoryTags = \[([\s\S]*?)\];',
-  ).firstMatch(source);
+  final source = File('lib/features/expenses/category_icons.dart')
+      .readAsStringSync();
+  final block = RegExp(r'presetCategoryTags = \[([\s\S]*?)\];')
+      .firstMatch(source);
   if (block == null) return const [];
   return [
     for (final m in RegExp(r"id:\s*'([a-z_]+)'").allMatches(block.group(1)!))
@@ -258,12 +256,10 @@ List<String> _presetCategoryIds() {
 }
 
 List<String> _flexSchemeOptionIds() {
-  final source = File(
-    'lib/core/theme/flex_theme_builder.dart',
-  ).readAsStringSync();
-  final block = RegExp(
-    r'flexSchemeOptionIds = \[([\s\S]*?)\];',
-  ).firstMatch(source);
+  final source = File('lib/core/theme/flex_theme_builder.dart')
+      .readAsStringSync();
+  final block = RegExp(r'flexSchemeOptionIds = \[([\s\S]*?)\];')
+      .firstMatch(source);
   if (block == null) return const [];
   return [
     for (final m in RegExp(r"'([A-Za-z0-9_]+)'").allMatches(block.group(1)!))
@@ -272,9 +268,8 @@ List<String> _flexSchemeOptionIds() {
 }
 
 List<String> _groupIconLabelKeys() {
-  final source = File(
-    'lib/features/groups/utils/group_icon_utils.dart',
-  ).readAsStringSync();
+  final source = File('lib/features/groups/utils/group_icon_utils.dart')
+      .readAsStringSync();
   return [
     for (final m in RegExp(r"'(wizard_icon_[a-z_]+)'").allMatches(source))
       m.group(1)!,

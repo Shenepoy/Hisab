@@ -1,5 +1,5 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Wraps [child] and registers a [BackButtonInterceptor] that dismisses the
 /// keyboard on back when it is visible, so the first back press does not

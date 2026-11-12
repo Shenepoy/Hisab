@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'onboarding_shared.dart';
@@ -59,10 +59,8 @@ class _PermissionRow extends StatelessWidget {
       title: 'onboarding_permission_camera'.tr(),
       subtitle: Text(
         'onboarding_permission_camera_desc'.tr(),
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: colors.onSurfaceVariant,
-          height: 1.3,
-        ),
+        style: Theme.of(context).textTheme.bodySmall
+            ?.copyWith(color: colors.onSurfaceVariant, height: 1.3),
       ),
       trailing: granted
           ? FilledButton.tonalIcon(

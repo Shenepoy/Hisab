@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
+
 import '../../../core/navigation/nav_back.dart';
 import '../../../core/platform/ui_perf.dart';
 import '../../../core/receipt/receipt_image_view.dart';
@@ -9,7 +10,9 @@ import '../../../core/services/household_service.dart';
 import '../../../core/theme/accent_style.dart';
 import '../../../core/widgets/amount_with_secondary_display.dart';
 import '../../../core/widgets/participant_avatar.dart';
+
 import 'package:hisab/core/settings/providers/settings_framework_providers.dart';
+
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/expense_display_title.dart';
 import '../../../core/widgets/missing_route_page.dart';
@@ -155,9 +158,8 @@ class ExpenseDetailBody extends ConsumerWidget {
                   label: 'expense_description'.tr(),
                   child: UserText(
                     expense.description!.trim(),
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(height: 1.45),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(height: 1.45),
                   ),
                 ),
               ],
@@ -171,9 +173,8 @@ class ExpenseDetailBody extends ConsumerWidget {
                         if (i > 0)
                           Divider(
                             height: 20,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+                            color: Theme.of(context).colorScheme.outlineVariant
+                                .withValues(alpha: 0.5),
                           ),
                         _LineItemRow(
                           description:

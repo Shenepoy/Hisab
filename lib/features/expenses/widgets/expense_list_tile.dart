@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import '../../../domain/domain.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/expense_display_title.dart';

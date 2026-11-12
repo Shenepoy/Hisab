@@ -464,9 +464,9 @@ bool _isLikelyLineItemPrice(List<String> lines, double amount) {
       ? amount.toStringAsFixed(0)
       : amount.toStringAsFixed(2);
   final tokenAlt = amount.toStringAsFixed(2).replaceAll('.', ',');
-  final hits = RegExp(
-    '${RegExp.escape(token)}|${RegExp.escape(tokenAlt)}',
-  ).allMatches(blob).length;
+  final hits = RegExp('${RegExp.escape(token)}|${RegExp.escape(tokenAlt)}')
+      .allMatches(blob)
+      .length;
   if (hits < 2) return false;
   // Larger labeled totals elsewhere → this amount is probably an item.
   for (final line in lines) {
@@ -921,9 +921,8 @@ List<ReceiptLineItem> _extractItems(List<String> lines) {
     }
 
     // "Lunch Special Sushi 3 X" with price on same/prev pattern: "192.00 Lunch..."
-    final leadAmount = RegExp(
-      r'^(\d{1,3}(?:[.,]\d{3})*[.,]\d{2})\s+(.+)$',
-    ).firstMatch(line);
+    final leadAmount = RegExp(r'^(\d{1,3}(?:[.,]\d{3})*[.,]\d{2})\s+(.+)$')
+        .firstMatch(line);
     if (leadAmount != null) {
       final amount = parseReceiptAmount(leadAmount.group(1)!);
       var name = leadAmount.group(2)!.trim();

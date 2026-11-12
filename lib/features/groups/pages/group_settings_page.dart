@@ -1,9 +1,10 @@
 import 'package:currency_picker/currency_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import '../providers/groups_provider.dart';
 import '../providers/group_member_provider.dart';
 import '../widgets/group_color_picker.dart';

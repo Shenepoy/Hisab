@@ -1,12 +1,14 @@
 name: hisab
 description: "Group expense splitting and settle-up app."
 publish_to: 'none'
-version: 0.8.0+106
+version: 0.8.1+107
 
 environment:
-  sdk: ^3.11.0
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
 
 dependencies:
+  material_ui: ^1.11.0
   flutter:
     sdk: flutter
 
@@ -36,9 +38,9 @@ dependencies:
   collection: ^1.19.1
 
   # UI & animations
-  flex_color_scheme: ^8.4.0
-  flex_color_picker: ^3.8.0
-  custom_sliding_segmented_control: ^1.8.5
+  flex_color_scheme: ^9.0.0
+  flex_color_picker: ^4.0.0
+  custom_sliding_segmented_control: ^2.0.0
   fl_chart: ^1.2.0
   flame: ^1.38.2
 
@@ -53,22 +55,13 @@ dependencies:
   flutter_image_compress: ^2.5.1
 
   # Logging
-  flutter_logging_service:
-    git:
-      url: https://github.com/Zyzto/siglat.git
-      ref: v0.2.2
+  flutter_logging_service: ^1.0.0
 
   # Settings (theme, formatting, and scanner preferences)
-  flutter_settings_framework:
-    git:
-      url: https://github.com/Zyzto/edadat.git
-      ref: v0.8.0
+  flutter_settings_framework: ^1.0.0
   # Safaeh is also pulled by Edadat; pin the same release directly because the
   # app uses its shared shell widgets throughout the UI.
-  safaeh:
-    git:
-      url: https://github.com/Zyzto/Safaeh.git
-      ref: v0.2.5
+  safaeh: ^1.1.0
 
   # About (version, licenses)
   package_info_plus: ^10.2.1
@@ -104,13 +97,6 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   marionette_mcp: ^0.6.0
 
-dependency_overrides:
-  # Edadat 0.8.0 uses the hosted Safaeh constraint for pub.dev publishing;
-  # the app consumes the newer tagged Safaeh release until it is published.
-  safaeh:
-    git:
-      url: https://github.com/Zyzto/Safaeh.git
-      ref: v0.2.5
 
 flutter_launcher_icons:
   android: true

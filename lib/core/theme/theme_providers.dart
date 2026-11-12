@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show Provider;
 import 'package:flutter_riverpod/legacy.dart' show StateProvider;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'accent_style.dart';
 import 'experiment_styles.dart';
 import 'flex_theme_builder.dart';

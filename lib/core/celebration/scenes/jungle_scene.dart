@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../celebration_fx.dart';
 import 'biome_scene_base.dart';
@@ -51,9 +51,8 @@ class JungleScene extends BiomeSceneBase {
                   Offset(x, y),
                   2.4 + (i.isEven ? 1.2 : 0),
                   Paint()
-                    ..color = const Color(
-                      0xFFFFF59D,
-                    ).withValues(alpha: 0.7 * alpha * tw),
+                    ..color = const Color(0xFFFFF59D)
+                        .withValues(alpha: 0.7 * alpha * tw),
                 );
               },
             );

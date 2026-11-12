@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:safaeh/safaeh.dart';
 
 import '../constants/confirmation_durations.dart';
@@ -93,9 +93,8 @@ Widget buildSheetShell(
     showTitleInBody: showTitleInBody,
     title: UserText(
       title,
-      style: Theme.of(
-        ctx,
-      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+      style: Theme.of(ctx).textTheme.titleMedium
+          ?.copyWith(fontWeight: FontWeight.w700),
     ),
   );
 }
@@ -248,9 +247,8 @@ class _TimedConfirmSheetContentState extends State<TimedConfirmSheetContent> {
               children: [
                 UserText(
                   widget.content,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 12),
                 UserText(

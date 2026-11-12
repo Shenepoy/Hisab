@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/layout/constrained_content.dart';
@@ -275,10 +275,8 @@ class _ConfidenceIndicator extends StatelessWidget {
           ),
           Text(
             '${(confidence * 100).round()}',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: 10,
-            ),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(fontWeight: FontWeight.w700, fontSize: 10),
           ),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Exposes the shell drawer API (and menu focus node) to nested page scaffolds.
 ///

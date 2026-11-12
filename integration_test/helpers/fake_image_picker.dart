@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 

@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../layout/layout_breakpoints.dart';
 import '../layout/responsive_sheet.dart';
@@ -130,9 +130,8 @@ class _InstallStepRow extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(height: 1.35),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(height: 1.35),
                   ),
                 ),
               ],

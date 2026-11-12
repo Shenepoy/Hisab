@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../core/layout/constrained_content.dart';
 import '../../../core/layout/content_aligned_app_bar.dart';
 import '../../../core/layout/layout_breakpoints.dart';
@@ -267,9 +268,9 @@ class _GroupCategoriesPageState extends ConsumerState<GroupCategoriesPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            tileColor: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest,
+                            tileColor: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
                             leading: CircleAvatar(
                               backgroundColor: chrome.container,
                               child: Icon(icon, color: chrome.onContainer),

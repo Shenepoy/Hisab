@@ -2,7 +2,7 @@ import 'package:flame/camera.dart' as flame_camera;
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../core/platform/ui_perf.dart';
 import 'onboarding_celestial.dart';

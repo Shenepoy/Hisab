@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hisab/domain/domain.dart';
@@ -74,18 +74,14 @@ void main() {
         overrides: [
           // Bodies resolve from the group list (shared watch) — no need for
           // per-id futureExpense overrides when the list is present.
-          expensesByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data([newer, older])),
-          participantsByGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(participants)),
-          futureGroupProvider(
-            groupId,
-          ).overrideWithValue(AsyncValue.data(testGroup)),
-          tagsByGroupProvider(
-            groupId,
-          ).overrideWithValue(const AsyncValue.data([])),
+          expensesByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data([newer, older])),
+          participantsByGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(participants)),
+          futureGroupProvider(groupId)
+              .overrideWithValue(AsyncValue.data(testGroup)),
+          tagsByGroupProvider(groupId)
+              .overrideWithValue(const AsyncValue.data([])),
           use24HourFormatProvider.overrideWithValue(false),
         ],
         child: EasyLocalization(

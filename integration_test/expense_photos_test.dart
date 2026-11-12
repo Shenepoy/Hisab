@@ -2,7 +2,7 @@
 // Not imported by app_test.dart (CI web). Run with:
 //   flutter test integration_test/expense_photos_test.dart -d <android_device>
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -55,10 +55,7 @@ void main() {
         await tapAndSettle(tester, find.text('Create Group'));
         await pumpAndSettleWithTimeout(tester);
 
-        await waitForWidget(
-          tester,
-          find.byKey(const Key('wizard_name_field')),
-        );
+        await waitForWidget(tester, find.byKey(const Key('wizard_name_field')));
         await enterTextAndPump(
           tester,
           find.byKey(const Key('wizard_name_field')),
@@ -68,10 +65,7 @@ void main() {
           tester,
           find.byKey(const Key('wizard_next_button')),
         );
-        await tapAndSettle(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
+        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
         await tester.pump(const Duration(milliseconds: 400));
 
         await waitForWidget(tester, find.text('Add'));
@@ -82,26 +76,17 @@ void main() {
           tester,
           find.byKey(const Key('wizard_next_button')),
         );
-        await tapAndSettle(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
+        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
         await tester.pump(const Duration(milliseconds: 400));
         await waitForWidget(
           tester,
           find.byKey(const Key('wizard_next_button')),
         );
-        await tapAndSettle(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
+        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
         await tester.pump(const Duration(milliseconds: 400));
         await pumpAndSettleWithTimeout(tester);
 
-        await tapAndPump(
-          tester,
-          find.byKey(const Key('wizard_create_button')),
-        );
+        await tapAndPump(tester, find.byKey(const Key('wizard_create_button')));
         await waitForWidget(
           tester,
           find.text('Expenses'),

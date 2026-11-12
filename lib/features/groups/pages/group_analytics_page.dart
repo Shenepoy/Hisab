@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -383,9 +383,10 @@ class _GroupAnalyticsPageState extends ConsumerState<GroupAnalyticsPage>
               : resolveTagLabel(tagId, data.tags);
           return _DropdownOption(id: tagId, label: label);
         }).toList()..sort(
-          (a, b) => _translateCategoryLike(a.label).toLowerCase().compareTo(
-            _translateCategoryLike(b.label).toLowerCase(),
-          ),
+          (a, b) =>
+              _translateCategoryLike(a.label)
+                  .toLowerCase()
+                  .compareTo(_translateCategoryLike(b.label).toLowerCase()),
         );
 
     final selectedCategoryLabel = _tagId == null
@@ -1086,9 +1087,9 @@ class _TrendChartCard extends StatelessWidget {
                     )
                     .toList(),
                 touchTooltipData: LineTouchTooltipData(
-                  getTooltipColor: (touchedSpot) => Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.88),
+                  getTooltipColor: (touchedSpot) =>
+                      Theme.of(context).colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.88),
                   tooltipBorderRadius: BorderRadius.circular(10),
                   tooltipPadding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -1334,9 +1335,8 @@ class _TrendChartCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: ThemeConfig.spacingM),
         child: Text(
           'analytics_empty_chart'.tr(),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ),
     );

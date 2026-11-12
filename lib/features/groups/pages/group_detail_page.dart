@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+
 import '../../../core/celebration/celebration_controller.dart';
 import '../../../core/celebration/celebration_kind.dart';
 import '../../../core/layout/content_aligned_app_bar.dart';
@@ -2050,9 +2051,8 @@ class _PeopleTabState extends ConsumerState<_PeopleTab> {
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: UserText(
                       participant.name,
-                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(ctx).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                 SheetOptionList(
@@ -2124,9 +2124,8 @@ class _PeopleTabState extends ConsumerState<_PeopleTab> {
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: UserText(
                       participant.name,
-                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(ctx).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                 SheetOptionList(
@@ -2176,9 +2175,8 @@ class _PeopleTabState extends ConsumerState<_PeopleTab> {
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                     child: UserText(
                       participant.name,
-                      style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Theme.of(ctx).textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                 SheetOptionList(

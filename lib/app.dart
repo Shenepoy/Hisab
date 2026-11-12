@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -187,7 +187,10 @@ class _AppState extends ConsumerState<App> with WidgetsBindingObserver {
           title: appNameTranslationKey.tr(),
           debugShowCheckedModeBanner: false,
           scrollBehavior: AppScrollBehavior(),
-          localizationsDelegates: context.localizationDelegates,
+          localizationsDelegates: [
+            ...GlobalMaterialLocalizations.delegates,
+            ...context.localizationDelegates,
+          ],
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           builder: (context, child) {
@@ -205,16 +208,20 @@ class _AppState extends ConsumerState<App> with WidgetsBindingObserver {
                 ),
               ),
             );
-            return Stack(
-              children: [
-                Positioned.fill(child: content),
-                _buildDebugFab(
-                  context: context,
-                  router: router,
-                  isDebug: isDebug,
-                  isRtl: isRtl,
-                ),
-              ],
+            // Bridge dependencies that still read the SDK Material theme.
+            // ignore: deprecated_member_use
+            return MaterialUiCompatibilityBridge(
+              child: Stack(
+                children: [
+                  Positioned.fill(child: content),
+                  _buildDebugFab(
+                    context: context,
+                    router: router,
+                    isDebug: isDebug,
+                    isRtl: isRtl,
+                  ),
+                ],
+              ),
             );
           },
           theme: themes.light,

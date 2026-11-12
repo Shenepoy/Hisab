@@ -280,8 +280,7 @@ void main() {
     test('round-trip backup.json and rejects zip slip', () {
       final bytes = encodeBackupZip(
         manifestJson: '{"version":2}',
-        backupJson:
-            '{"version":2,"groups":[],"participants":[],"expenses":[],"expense_tags":[]}',
+        backupJson: '{"version":2,"groups":[],"participants":[],"expenses":[],"expense_tags":[]}',
         reportHtml: '<html></html>',
         expensesCsv: 'date\n',
       );

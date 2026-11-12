@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/test_helpers.dart';
@@ -9,222 +9,244 @@ import 'helpers/test_helpers.dart';
 /// - Expense detail showing amount in group currency
 void main() {
   group('Display currency and group currency display', () {
-    testWidgets('set display currency → create group → add expense → '
-        'group detail shows group currency → expense detail shows group currency', (
-      tester,
-    ) async {
-      await ensureIntegrationTestReady(tester);
+    testWidgets(
+      'set display currency → create group → add expense → '
+      'group detail shows group currency → expense detail shows group currency',
+      (tester) async {
+        await ensureIntegrationTestReady(tester);
 
-      // ── Stage: set display currency in Settings ──
-      await stage('set display currency', () async {
-        await tapAnyText(tester, ['Settings', 'الإعدادات']);
-        await pumpAndSettleWithTimeout(tester);
-
-        await scrollUntilVisible(
-          tester,
-          textAnyOf(tester, ['Display Currency', 'عملة العرض']),
-        );
-        await tapAndSettle(
-          tester,
-          textAnyOf(tester, ['Display Currency', 'عملة العرض']),
-        );
-        await pumpAndSettleWithTimeout(tester);
-
-        // Currency picker opens (title "Select Currency" on tablet; on mobile sheet has no title, so wait for search field)
-        await waitForWidget(
-          tester,
-          find.byType(TextField),
-          timeout: const Duration(seconds: 10),
-        );
-        final searchField = find.byType(TextField);
-        if (searchField.evaluate().isNotEmpty) {
-          await enterTextAndPump(tester, searchField.first, 'USD');
+        // ── Stage: set display currency in Settings ──
+        await stage('set display currency', () async {
+          await tapAnyText(tester, ['Settings', 'الإعدادات']);
           await pumpAndSettleWithTimeout(tester);
-        }
 
-        // Tap the USD row by its full name (list shows code + "United States Dollar")
-        final usdRowFinder = find.text('United States Dollar');
-        expect(
-          usdRowFinder,
-          findsWidgets,
-          reason: 'USD row should appear in picker',
-        );
-        await tester.ensureVisible(usdRowFinder.first);
-        await tapAndSettle(tester, usdRowFinder.first);
-        await pumpAndSettleWithTimeout(tester);
-
-        // Picker closes; wait for adaptive sheet to be gone so nav is tappable
-        await waitForResponsiveSheetClosed(tester);
-        await pumpAndSettleWithTimeout(tester);
-
-        // Picker closes; we're back on Settings
-        await waitForAnyText(tester, ['Settings', 'الإعدادات']);
-      });
-
-      // ── Stage: create group ──
-      await stage('create group for display currency', () async {
-        await pumpAndSettleWithTimeout(tester);
-        await scrollUntilVisible(
-          tester,
-          textAnyOf(tester, ['Groups', 'المجموعات']),
-        );
-        await tester.ensureVisible(textAnyOf(tester, ['Groups', 'المجموعات']).first);
-        // Tap the nav bar item (InkWell containing "Groups") so we hit the tappable area, not obscured text
-        final groupsNav = find.widgetWithText(InkWell, 'Groups').evaluate().isNotEmpty
-            ? find.widgetWithText(InkWell, 'Groups')
-            : find.widgetWithText(InkWell, 'المجموعات');
-        if (groupsNav.evaluate().isNotEmpty) {
-          await tester.ensureVisible(groupsNav.first);
-          await tapAndSettle(tester, groupsNav.first);
-        } else {
-          await tapAndSettle(tester, textAnyOf(tester, ['Groups', 'المجموعات']).first);
-        }
-        await pumpAndSettleWithTimeout(tester);
-
-        await waitForWidget(
-          tester,
-          find.byIcon(Icons.add),
-          timeout: const Duration(seconds: 15),
-        );
-        await tester.ensureVisible(find.byIcon(Icons.add).first);
-        await tapAndSettle(tester, find.byIcon(Icons.add));
-        await waitForWidget(tester, find.text('Create Group'));
-        await tapAndSettle(tester, find.text('Create Group'));
-        await pumpAndSettleWithTimeout(tester);
-
-        await waitForWidget(tester, find.byKey(const Key('wizard_name_field')));
-        await enterTextAndPump(
-          tester,
-          find.byKey(const Key('wizard_name_field')),
-          'Display Currency Group',
-        );
-        await waitForWidget(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
-        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
-        await tester.pump(const Duration(milliseconds: 400));
-
-        await waitForAnyText(tester, ['Add', 'إضافة']);
-        await addWizardParticipant(tester, 'Alex');
-        await addWizardParticipant(tester, 'Sam');
-
-        await waitForWidget(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
-        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
-        await tester.pump(const Duration(milliseconds: 400));
-        await waitForWidget(
-          tester,
-          find.byKey(const Key('wizard_next_button')),
-        );
-        await tapAndSettle(tester, find.byKey(const Key('wizard_next_button')));
-        await tester.pump(const Duration(milliseconds: 400));
-        await pumpAndSettleWithTimeout(tester);
-
-        final createButton = find.byKey(const Key('wizard_create_button'));
-        await tapAndPump(tester, createButton);
-
-        await waitForWidget(
-          tester,
-          find.text('Expenses'),
-          timeout: const Duration(seconds: 20),
-        );
-        await waitForWidget(
-          tester,
-          find.byKey(const Key('group_detail_title')),
-          timeout: const Duration(seconds: 5),
-        );
-        expect(find.byKey(const Key('group_detail_title')), findsOneWidget);
-      });
-
-      // ── Stage: add expense (group currency SAR by default) ──
-      await stage('add expense in group currency', () async {
-        await tapAndSettle(tester, find.byIcon(Icons.add).first);
-        await pumpAndSettleWithTimeout(tester);
-        await ensureExpenseFormReady(tester);
-
-        await enterTextAndPump(tester, find.byType(TextField).first, 'Coffee');
-        await enterTextAndPump(tester, find.byType(TextField).at(1), '85');
-
-        await tapSubmitExpenseButton(tester);
-        await ensureFormClosed(tester);
-
-        await waitForWidget(tester, find.text('Coffee'));
-        expect(find.text('Coffee'), findsWidgets);
-      });
-
-      // ── Stage: group detail shows summary in group currency ──
-      await stage('group detail shows group currency', () async {
-        // Non-personal groups show share / paid / total (not "My Expenses").
-        expect(
-          find.text('Your share').evaluate().isNotEmpty ||
-              find.text('حصتك').evaluate().isNotEmpty ||
-              find.text('My Expenses').evaluate().isNotEmpty ||
-              find.text('مصاريفي').evaluate().isNotEmpty,
-          isTrue,
-        );
-        expect(
-          find.text('Total Expenses').evaluate().isNotEmpty ||
-              find.text('إجمالي المصاريف').evaluate().isNotEmpty ||
-              find.text('إجمالي المصروفات').evaluate().isNotEmpty,
-          isTrue,
-        );
-        // Amounts are in group currency (SAR); we show formatted amount
-        expect(find.text('Coffee'), findsWidgets);
-      });
-
-      // ── Stage: expense detail shows amount in group currency ──
-      await stage('expense detail shows group currency', () async {
-        await tapAndSettle(tester, find.text('Coffee'));
-        await pumpAndSettleWithTimeout(tester);
-
-        expect(find.text('Coffee'), findsWidgets);
-        await tapAndSettle(tester, find.byIcon(Icons.arrow_back));
-        await waitForAnyText(tester, ['Expenses', 'المصروفات']);
-      });
-
-      // ── Stage: clear display currency (verifies clear button works) ──
-      await stage('clear display currency', () async {
-        // We may still be on group detail; tap back until Settings is visible in shell nav
-        for (
-          var i = 0;
-          i < 3 &&
-              find.text('Settings').evaluate().isEmpty &&
-              find.text('الإعدادات').evaluate().isEmpty;
-          i++
-        ) {
-          if (find.byIcon(Icons.arrow_back).evaluate().isEmpty) break;
-          await tapAndSettle(tester, find.byIcon(Icons.arrow_back).first);
+          await scrollUntilVisible(
+            tester,
+            textAnyOf(tester, ['Display Currency', 'عملة العرض']),
+          );
+          await tapAndSettle(
+            tester,
+            textAnyOf(tester, ['Display Currency', 'عملة العرض']),
+          );
           await pumpAndSettleWithTimeout(tester);
-        }
-        await waitForAnyText(
-          tester,
-          ['Settings', 'الإعدادات'],
-          timeout: const Duration(seconds: 5),
-        );
-        await tapAnyText(tester, ['Settings', 'الإعدادات']);
-        await pumpAndSettleWithTimeout(tester);
 
-        await scrollUntilVisible(
-          tester,
-          textAnyOf(tester, ['Display Currency', 'عملة العرض']),
-        );
-        final displayCurrencyTile = find.ancestor(
-          of: textAnyOf(tester, ['Display Currency', 'عملة العرض']),
-          matching: find.byType(ListTile),
-        );
-        final clearBtn = find.descendant(
-          of: displayCurrencyTile,
-          matching: find.byIcon(Icons.clear),
-        );
-        if (clearBtn.evaluate().isNotEmpty) {
-          await tapAndSettle(tester, clearBtn.first);
+          // Currency picker opens (title "Select Currency" on tablet; on mobile sheet has no title, so wait for search field)
+          await waitForWidget(
+            tester,
+            find.byType(TextField),
+            timeout: const Duration(seconds: 10),
+          );
+          final searchField = find.byType(TextField);
+          if (searchField.evaluate().isNotEmpty) {
+            await enterTextAndPump(tester, searchField.first, 'USD');
+            await pumpAndSettleWithTimeout(tester);
+          }
+
+          // Tap the USD row by its full name (list shows code + "United States Dollar")
+          final usdRowFinder = find.text('United States Dollar');
+          expect(
+            usdRowFinder,
+            findsWidgets,
+            reason: 'USD row should appear in picker',
+          );
+          await tester.ensureVisible(usdRowFinder.first);
+          await tapAndSettle(tester, usdRowFinder.first);
           await pumpAndSettleWithTimeout(tester);
-        }
-        await waitForAnyText(tester, ['Settings', 'الإعدادات']);
-      });
-    });
+
+          // Picker closes; wait for adaptive sheet to be gone so nav is tappable
+          await waitForResponsiveSheetClosed(tester);
+          await pumpAndSettleWithTimeout(tester);
+
+          // Picker closes; we're back on Settings
+          await waitForAnyText(tester, ['Settings', 'الإعدادات']);
+        });
+
+        // ── Stage: create group ──
+        await stage('create group for display currency', () async {
+          await pumpAndSettleWithTimeout(tester);
+          await scrollUntilVisible(
+            tester,
+            textAnyOf(tester, ['Groups', 'المجموعات']),
+          );
+          await tester.ensureVisible(
+            textAnyOf(tester, ['Groups', 'المجموعات']).first,
+          );
+          // Tap the nav bar item (InkWell containing "Groups") so we hit the tappable area, not obscured text
+          final groupsNav =
+              find.widgetWithText(InkWell, 'Groups').evaluate().isNotEmpty
+              ? find.widgetWithText(InkWell, 'Groups')
+              : find.widgetWithText(InkWell, 'المجموعات');
+          if (groupsNav.evaluate().isNotEmpty) {
+            await tester.ensureVisible(groupsNav.first);
+            await tapAndSettle(tester, groupsNav.first);
+          } else {
+            await tapAndSettle(
+              tester,
+              textAnyOf(tester, ['Groups', 'المجموعات']).first,
+            );
+          }
+          await pumpAndSettleWithTimeout(tester);
+
+          await waitForWidget(
+            tester,
+            find.byIcon(Icons.add),
+            timeout: const Duration(seconds: 15),
+          );
+          await tester.ensureVisible(find.byIcon(Icons.add).first);
+          await tapAndSettle(tester, find.byIcon(Icons.add));
+          await waitForWidget(tester, find.text('Create Group'));
+          await tapAndSettle(tester, find.text('Create Group'));
+          await pumpAndSettleWithTimeout(tester);
+
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('wizard_name_field')),
+          );
+          await enterTextAndPump(
+            tester,
+            find.byKey(const Key('wizard_name_field')),
+            'Display Currency Group',
+          );
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tapAndSettle(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tester.pump(const Duration(milliseconds: 400));
+
+          await waitForAnyText(tester, ['Add', 'إضافة']);
+          await addWizardParticipant(tester, 'Alex');
+          await addWizardParticipant(tester, 'Sam');
+
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tapAndSettle(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tester.pump(const Duration(milliseconds: 400));
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tapAndSettle(
+            tester,
+            find.byKey(const Key('wizard_next_button')),
+          );
+          await tester.pump(const Duration(milliseconds: 400));
+          await pumpAndSettleWithTimeout(tester);
+
+          final createButton = find.byKey(const Key('wizard_create_button'));
+          await tapAndPump(tester, createButton);
+
+          await waitForWidget(
+            tester,
+            find.text('Expenses'),
+            timeout: const Duration(seconds: 20),
+          );
+          await waitForWidget(
+            tester,
+            find.byKey(const Key('group_detail_title')),
+            timeout: const Duration(seconds: 5),
+          );
+          expect(find.byKey(const Key('group_detail_title')), findsOneWidget);
+        });
+
+        // ── Stage: add expense (group currency SAR by default) ──
+        await stage('add expense in group currency', () async {
+          await tapAndSettle(tester, find.byIcon(Icons.add).first);
+          await pumpAndSettleWithTimeout(tester);
+          await ensureExpenseFormReady(tester);
+
+          await enterTextAndPump(
+            tester,
+            find.byType(TextField).first,
+            'Coffee',
+          );
+          await enterTextAndPump(tester, find.byType(TextField).at(1), '85');
+
+          await tapSubmitExpenseButton(tester);
+          await ensureFormClosed(tester);
+
+          await waitForWidget(tester, find.text('Coffee'));
+          expect(find.text('Coffee'), findsWidgets);
+        });
+
+        // ── Stage: group detail shows summary in group currency ──
+        await stage('group detail shows group currency', () async {
+          // Non-personal groups show share / paid / total (not "My Expenses").
+          expect(
+            find.text('Your share').evaluate().isNotEmpty ||
+                find.text('حصتك').evaluate().isNotEmpty ||
+                find.text('My Expenses').evaluate().isNotEmpty ||
+                find.text('مصاريفي').evaluate().isNotEmpty,
+            isTrue,
+          );
+          expect(
+            find.text('Total Expenses').evaluate().isNotEmpty ||
+                find.text('إجمالي المصاريف').evaluate().isNotEmpty ||
+                find.text('إجمالي المصروفات').evaluate().isNotEmpty,
+            isTrue,
+          );
+          // Amounts are in group currency (SAR); we show formatted amount
+          expect(find.text('Coffee'), findsWidgets);
+        });
+
+        // ── Stage: expense detail shows amount in group currency ──
+        await stage('expense detail shows group currency', () async {
+          await tapAndSettle(tester, find.text('Coffee'));
+          await pumpAndSettleWithTimeout(tester);
+
+          expect(find.text('Coffee'), findsWidgets);
+          await tapAndSettle(tester, find.byIcon(Icons.arrow_back));
+          await waitForAnyText(tester, ['Expenses', 'المصروفات']);
+        });
+
+        // ── Stage: clear display currency (verifies clear button works) ──
+        await stage('clear display currency', () async {
+          // We may still be on group detail; tap back until Settings is visible in shell nav
+          for (
+            var i = 0;
+            i < 3 &&
+                find.text('Settings').evaluate().isEmpty &&
+                find.text('الإعدادات').evaluate().isEmpty;
+            i++
+          ) {
+            if (find.byIcon(Icons.arrow_back).evaluate().isEmpty) break;
+            await tapAndSettle(tester, find.byIcon(Icons.arrow_back).first);
+            await pumpAndSettleWithTimeout(tester);
+          }
+          await waitForAnyText(tester, [
+            'Settings',
+            'الإعدادات',
+          ], timeout: const Duration(seconds: 5));
+          await tapAnyText(tester, ['Settings', 'الإعدادات']);
+          await pumpAndSettleWithTimeout(tester);
+
+          await scrollUntilVisible(
+            tester,
+            textAnyOf(tester, ['Display Currency', 'عملة العرض']),
+          );
+          final displayCurrencyTile = find.ancestor(
+            of: textAnyOf(tester, ['Display Currency', 'عملة العرض']),
+            matching: find.byType(ListTile),
+          );
+          final clearBtn = find.descendant(
+            of: displayCurrencyTile,
+            matching: find.byIcon(Icons.clear),
+          );
+          if (clearBtn.evaluate().isNotEmpty) {
+            await tapAndSettle(tester, clearBtn.first);
+            await pumpAndSettleWithTimeout(tester);
+          }
+          await waitForAnyText(tester, ['Settings', 'الإعدادات']);
+        });
+      },
+    );
   });
 }

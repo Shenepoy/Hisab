@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
@@ -398,11 +398,10 @@ void main() {
 
     final afterBottom = tester.getBottomLeft(panel).dy;
     final afterHeight = tester.getSize(panel).height;
-    // With IME up, bottom SafeArea turns off so the sheet sits on the
-    // keyboard (no home-indicator gap). Lift = keyboard − prior safe inset.
-    expect(afterBottom, closeTo(beforeBottom - 300 + 34, 1));
-    // Short sheet height must stay stable (no nested safe-area jump).
-    expect(afterHeight, closeTo(beforeHeight, 1));
+    // Safaeh paints through the home-indicator area and removes that inner
+    // padding while the keyboard is visible, keeping the panel flush to it.
+    expect(afterBottom, closeTo(beforeBottom - 300, 1));
+    expect(afterHeight, closeTo(beforeHeight - 34, 1));
   });
 
   testWidgets('IME inset tracked frame-by-frame without modal lag', (

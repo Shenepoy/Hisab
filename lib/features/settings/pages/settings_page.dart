@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show listEquals;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_logging_service/flutter_logging_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_settings_framework/flutter_settings_framework.dart';
@@ -50,9 +50,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final uri = GoRouter.maybeOf(
-        context,
-      )?.routerDelegate.currentConfiguration.uri;
+      final uri = GoRouter.maybeOf(context)
+          ?.routerDelegate
+          .currentConfiguration
+          .uri;
       final focus = uri?.queryParameters[RoutePaths.settingsFocusParam];
       if (focus == null || focus.isEmpty) return;
       setState(() => _focusedSetting = focus);
@@ -540,9 +541,8 @@ class _FavoriteCurrenciesSheetState extends State<_FavoriteCurrenciesSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'favorite_currencies_hint'.tr(),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.bodySmall
+                  ?.copyWith(color: colorScheme.onSurfaceVariant),
             ),
           ),
           const SizedBox(height: 8),

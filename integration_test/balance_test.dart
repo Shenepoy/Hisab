@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/test_helpers.dart';
@@ -128,11 +128,10 @@ void main() {
       await stage('verify settlement UI', () async {
         await tester.pump(const Duration(milliseconds: 2000));
         // Wait for "Settle Up" section (balance list builds in stages).
-        await waitForAnyText(
-          tester,
-          ['Settle Up', 'تسوية الحساب'],
-          timeout: const Duration(seconds: 20),
-        );
+        await waitForAnyText(tester, [
+          'Settle Up',
+          'تسوية الحساب',
+        ], timeout: const Duration(seconds: 20));
         // Scroll to reveal settlement rows; payment icons or arrows may be off-screen.
         final scrollable = find.byType(Scrollable).first;
         for (var i = 0; i < 15; i++) {
@@ -156,8 +155,7 @@ void main() {
         expect(
           hasArrows || hasPaymentIcons || hasSettleUp,
           isTrue,
-          reason:
-              'Balance tab should show Settle Up section with arrows or payment buttons',
+          reason: 'Balance tab should show Settle Up section with arrows or payment buttons',
         );
       });
 
@@ -168,7 +166,8 @@ void main() {
           await tapAndSettle(tester, paymentIcon.first);
           await pumpAndSettleWithTimeout(tester);
 
-          final confirmButton = find.text('Record Payment').evaluate().isNotEmpty
+          final confirmButton =
+              find.text('Record Payment').evaluate().isNotEmpty
               ? find.text('Record Payment')
               : find.text('تسجيل الدفعة');
           if (confirmButton.evaluate().isNotEmpty) {
@@ -189,7 +188,8 @@ void main() {
           await tapAndSettle(tester, paymentIcon.first);
           await pumpAndSettleWithTimeout(tester);
 
-          final confirmButton = find.text('Record Payment').evaluate().isNotEmpty
+          final confirmButton =
+              find.text('Record Payment').evaluate().isNotEmpty
               ? find.text('Record Payment')
               : find.text('تسجيل الدفعة');
           if (confirmButton.evaluate().isNotEmpty) {
@@ -228,7 +228,8 @@ void main() {
         await pumpAndSettleWithTimeout(tester);
         await tester.pump(const Duration(milliseconds: 2500));
         // Tab should show content (participants or add-participants prompt)
-        final hasContent = find.textContaining('Add Participants').evaluate().isNotEmpty ||
+        final hasContent =
+            find.textContaining('Add Participants').evaluate().isNotEmpty ||
             find.text('Owner').evaluate().isNotEmpty ||
             find.textContaining('Alice').evaluate().isNotEmpty ||
             find.textContaining('Bob').evaluate().isNotEmpty ||

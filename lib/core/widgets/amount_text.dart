@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Pre-formatted money string with forced LTR so number/currency order stays
 /// stable inside RTL UI shells.

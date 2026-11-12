@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/test_helpers.dart';
@@ -9,11 +9,10 @@ void main() {
       'theme → language → font size → export → import → about → persist',
       (tester) async {
         await ensureIntegrationTestReady(tester);
-        await waitForAnyText(
-          tester,
-          ['Settings', 'الإعدادات'],
-          timeout: const Duration(seconds: 30),
-        );
+        await waitForAnyText(tester, [
+          'Settings',
+          'الإعدادات',
+        ], timeout: const Duration(seconds: 30));
         await tapAnyText(tester, ['Settings', 'الإعدادات']);
 
         // ── Stage: change theme ──
@@ -24,7 +23,10 @@ void main() {
 
           await tapAnyText(tester, ['Light', 'فاتح']);
 
-          await scrollUntilVisible(tester, textAnyOf(tester, ['Theme', 'المظهر']));
+          await scrollUntilVisible(
+            tester,
+            textAnyOf(tester, ['Theme', 'المظهر']),
+          );
           expect(
             find.text('Light').evaluate().isNotEmpty ||
                 find.text('فاتح').evaluate().isNotEmpty,
@@ -44,7 +46,10 @@ void main() {
 
           expect(find.text('العربية'), findsWidgets);
 
-          await scrollUntilVisible(tester, textAnyOf(tester, ['Language', 'اللغة']));
+          await scrollUntilVisible(
+            tester,
+            textAnyOf(tester, ['Language', 'اللغة']),
+          );
           await tapAndSettle(tester, textAnyOf(tester, ['Language', 'اللغة']));
           await waitForWidget(tester, find.text('English'));
           await tapAndSettle(tester, find.text('English'));
@@ -59,7 +64,10 @@ void main() {
             tester,
             textAnyOf(tester, ['Font Size', 'حجم الخط']),
           );
-          await tapAndSettle(tester, textAnyOf(tester, ['Font Size', 'حجم الخط']));
+          await tapAndSettle(
+            tester,
+            textAnyOf(tester, ['Font Size', 'حجم الخط']),
+          );
 
           await tapAnyText(tester, ['Large', 'كبير']);
 
@@ -74,7 +82,10 @@ void main() {
           );
 
           // Revert to Normal
-          await tapAndSettle(tester, textAnyOf(tester, ['Font Size', 'حجم الخط']));
+          await tapAndSettle(
+            tester,
+            textAnyOf(tester, ['Font Size', 'حجم الخط']),
+          );
           await tapAnyText(tester, ['Normal', 'عادي']);
         });
 
