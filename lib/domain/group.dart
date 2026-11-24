@@ -41,7 +41,7 @@ class Group {
     required this.currencyCode,
     required this.createdAt,
     required this.updatedAt,
-    this.settlementMethod = SettlementMethod.greedy,
+    this.settlementMethod = SettlementMethod.pairwise,
     this.treasurerParticipantId,
     this.settlementFreezeAt,
     this.settlementSnapshotJson,

@@ -81,7 +81,7 @@ class PowerSyncGroupRepository implements IGroupRepository {
     List<String> initialParticipants = const [],
     bool isPersonal = false,
     int? budgetAmountCents,
-    SettlementMethod settlementMethod = SettlementMethod.greedy,
+    SettlementMethod settlementMethod = SettlementMethod.pairwise,
     bool allowMemberAddExpense = true,
     bool allowMemberChangeSettings = true,
     bool allowExpenseAsOtherParticipant = true,

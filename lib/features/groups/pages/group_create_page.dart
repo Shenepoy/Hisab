@@ -172,7 +172,7 @@ class _GroupCreatePageState extends ConsumerState<GroupCreatePage>
   Color _selectedColor = groupColors.first;
 
   // ── Group settings (group create only; not personal) ──
-  SettlementMethod _settlementMethod = SettlementMethod.greedy;
+  SettlementMethod _settlementMethod = SettlementMethod.pairwise;
 
   /// `null` = owner is treasurer; otherwise a name from [_draftPeople].
   String? _treasurerParticipantName;
