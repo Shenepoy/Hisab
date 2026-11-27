@@ -198,7 +198,14 @@ class _ExpensePhotoGalleryDialogState
                       ),
                       Expanded(
                         child: Text(
-                          count == 0 ? '' : '${_index + 1} / $count',
+                          count == 0
+                              ? ''
+                              : 'expense_photo_position'.tr(
+                                  namedArgs: {
+                                    'current': '${_index + 1}',
+                                    'total': '$count',
+                                  },
+                                ),
                           textAlign: TextAlign.center,
                           style: theme.textTheme.titleSmall?.copyWith(
                             color: Colors.white,

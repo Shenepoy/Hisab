@@ -69,7 +69,7 @@ class _FakeExpenseRepository implements IExpenseRepository {
   Future<Expense?> getById(String id) async => null;
 
   @override
-  Future<void> update(Expense expense) async {}
+  Future<void> update(Expense expense, {Expense? baseline}) async {}
 
   @override
   Stream<List<Expense>> watchAll() => const Stream.empty();

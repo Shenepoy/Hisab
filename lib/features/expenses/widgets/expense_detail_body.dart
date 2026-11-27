@@ -763,36 +763,40 @@ class _ReceiptThumbnailStrip extends StatelessWidget {
                 padding: EdgeInsetsDirectional.only(
                   end: i == urls.length - 1 ? 0 : 8,
                 ),
-                child: GestureDetector(
-                  onTap: () => showExpenseImageFullScreen(context, urls[i]),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: theme.colorScheme.outlineVariant.withValues(
-                          alpha: 0.55,
+                child: Semantics(
+                  button: true,
+                  label: 'expense_detail_open_receipt'.tr(),
+                  child: GestureDetector(
+                    onTap: () => showExpenseImageFullScreen(context, urls[i]),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: theme.colorScheme.outlineVariant.withValues(
+                            alpha: 0.55,
+                          ),
                         ),
-                      ),
-                      boxShadow: UiPerf.preferCheapShadows
-                          ? null
-                          : [
-                              BoxShadow(
-                                color: theme.colorScheme.shadow.withValues(
-                                  alpha: 0.08,
+                        boxShadow: UiPerf.preferCheapShadows
+                            ? null
+                            : [
+                                BoxShadow(
+                                  color: theme.colorScheme.shadow.withValues(
+                                    alpha: 0.08,
+                                  ),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
                                 ),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                    ),
-                    child: buildExpenseImageView(
-                      context,
-                      urls[i],
-                      width: 92,
-                      maxHeight: 92,
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(12),
-                      fit: BoxFit.cover,
+                              ],
+                      ),
+                      child: buildExpenseImageView(
+                        context,
+                        urls[i],
+                        width: 92,
+                        maxHeight: 92,
+                        padding: EdgeInsets.zero,
+                        borderRadius: BorderRadius.circular(12),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

@@ -98,7 +98,10 @@ mixin _ExpenseFormPhotoActionsMixin on ConsumerState<ExpenseFormPage> {
     } catch (e, stack) {
       if (mounted) {
         Log.warning('Photo add error', error: e, stackTrace: stack);
-        context.showError('receipt_scan_error'.tr(args: [e.toString()]));
+        context.showError(
+          (scanAfter ? 'receipt_scan_error' : 'expense_attachment_add_failed')
+              .tr(args: [e.toString()]),
+        );
       }
     } finally {}
     if (scanAfter && lastOcrBytes != null && mounted) {

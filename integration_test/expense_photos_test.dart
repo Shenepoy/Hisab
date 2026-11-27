@@ -124,7 +124,7 @@ void main() {
         await pumpAndSettleWithTimeout(tester);
         await tester.pump(const Duration(seconds: 1));
 
-        await waitForWidget(tester, find.text('Photos'));
+        await waitForWidget(tester, find.text('Attachments'));
         expect(
           find.byIcon(Icons.add_photo_alternate_outlined),
           findsOneWidget,
@@ -153,7 +153,7 @@ void main() {
         expect(
           find.textContaining('4/5'),
           findsWidgets,
-          reason: 'Should show "Photos (4/5)" after attaching 4 images',
+          reason: 'Should show "Attachments" with a 4/5 count after attaching 4 images',
         );
         expect(
           find.byIcon(Icons.close).evaluate().length,
